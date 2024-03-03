@@ -6,7 +6,6 @@ function RepeatElement(props: { times: number }) {
 			Item {index}
 		</div>
 	));
-	console.log("test");
 
 	return <>{elements}</>;
 }
