@@ -4,6 +4,7 @@ import { getCategoryProducts } from "@/api/product";
 import { getPageEnumVal } from "@/app/pages";
 import ItemGrid from "@/components/ItemGrid/ItemGrid";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
+import { Pagination } from "@nextui-org/react";
 
 function page({ params }: { params: { categoryName: string } }) {
 	const categoryNameEnumVal = getPageEnumVal(params.categoryName);
@@ -28,8 +29,8 @@ function page({ params }: { params: { categoryName: string } }) {
 							filters={[categoryNameEnumVal.toString()]}
 						/>
 					</div>
-					<div className="flex justify-center items-center text-center w-96 h-12 border border-blue-500">
-						Pagination
+					<div className="flex justify-center items-center text-center">
+						<Pagination showControls total={10} initialPage={1} />
 					</div>
 				</main>
 			</>
