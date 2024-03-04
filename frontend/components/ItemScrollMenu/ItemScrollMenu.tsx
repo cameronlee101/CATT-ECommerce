@@ -12,65 +12,81 @@ import "./hideScrollbar.css";
 import ItemCard from "@/components/ItemCard/ItemCard";
 import { Product } from "@/api/product.types";
 import { useQuery } from "@tanstack/react-query";
+import ItemCardSkeleton from "../ItemCardSkeleton/ItemCardSkeleton";
 
 type scrollVisibilityApiType = React.ContextType<typeof VisibilityContext>;
 
 type ItemScrollMenuProps = {
-  header: string;
-  getContents: () => Promise<Product[]>;
+	header: string;
+	getContents: () => Promise<Product[]>;
 };
 
 function ItemScrollMenu({ header, getContents }: ItemScrollMenuProps) {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["products", getContents],
-    queryFn: getContents,
-  });
+	const { isLoading, error, data } = useQuery({
+		queryKey: ["products", getContents],
+		queryFn: getContents,
+	});
 
-  const [items, setItems] = useState<Product[]>([]);
-  const { disableScroll, enableScroll } = usePreventBodyScroll();
+	const [items, setItems] = useState<Product[]>([]);
+	const { disableScroll, enableScroll } = usePreventBodyScroll();
 
-  useEffect(() => {
-    if (data) {
-      setItems(data);
-    }
-  }, [data]);
+	useEffect(() => {
+		if (data) {
+			setItems(data);
+		}
+	}, [data]);
 
-  return (
-    <>
-      <div className="w-full">
-        <h3 className="text-large font-bold uppercase">{header}</h3>
-        <div onMouseEnter={disableScroll} onMouseLeave={enableScroll}>
-          <ScrollMenu
-            separatorClassName="mx-1"
-            scrollContainerClassName="p-3"
-            LeftArrow={LeftArrow}
-            RightArrow={RightArrow}
-            onWheel={onWheel}
-          >
-            {items.map((item) => (
-              <div key={item.productId}>
-                <ItemCard isLoading={isLoading} error={error} product={item} />
-              </div>
-            ))}
-          </ScrollMenu>
-        </div>
-      </div>
-    </>
-  );
+	useEffect(() => {
+		console.error(error);
+	}, [error]);
+
+	return (
+		<>
+			<div className="w-full">
+				<h3 className="text-large font-bold uppercase">{header}</h3>
+				<div onMouseEnter={disableScroll} onMouseLeave={enableScroll}>
+					<ScrollMenu
+						separatorClassName="mx-1"
+						scrollContainerClassName="p-3"
+						LeftArrow={LeftArrow}
+						RightArrow={RightArrow}
+						onWheel={onWheel}
+					>
+						{!(isLoading || error)
+							? items.map((item) => (
+									<div key={item.productId}>
+										<ItemCard
+											isLoading={isLoading}
+											error={error}
+											product={item}
+										/>
+									</div>
+								))
+							: Array.from({ length: 6 }, (_, index) => (
+									<div key={index}>
+										<ItemCardSkeleton />
+									</div>
+								))}
+					</ScrollMenu>
+				</div>
+			</div>
+		</>
+	);
 }
+
 export default ItemScrollMenu;
 
 function onWheel(apiObj: scrollVisibilityApiType, ev: React.WheelEvent): void {
-  const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
+	const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
 
-  if (isThouchpad) {
-    ev.stopPropagation();
-    return;
-  }
+	if (isThouchpad) {
+		ev.stopPropagation();
+		return;
+	}
 
-  if (ev.deltaY < 0) {
-    apiObj.scrollNext();
-  } else if (ev.deltaY > 0) {
-    apiObj.scrollPrev();
-  }
+	if (ev.deltaY < 0) {
+		apiObj.scrollNext();
+	} else if (ev.deltaY > 0) {
+		apiObj.scrollPrev();
+	}
 }
