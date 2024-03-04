@@ -54,12 +54,9 @@ function TopNavbar({ highlightLink }: TopNavbarProps) {
 						type="search"
 					/>
 				</NavbarItem>
-				<NavbarItem className="hidden lg:flex">
-					<Link href="/login">Login</Link>
-				</NavbarItem>
 				<NavbarItem>
-					<Button as={Link} color="primary" href="/signup" variant="flat">
-						Sign Up
+					<Button as={Link} color="primary" href="/signin" variant="flat">
+						Sign In
 					</Button>
 				</NavbarItem>
 			</NavbarContent>
