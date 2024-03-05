@@ -1,7 +1,7 @@
 // documentation for ScrollMenu at https://github.com/asmyshlyaev177/react-horizontal-scrolling-menu?tab=readme-ov-file
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import "react-horizontal-scrolling-menu/dist/styles.css";
 
@@ -13,32 +13,31 @@ import ItemCard from "@/components/ItemCard/ItemCard";
 import { Product } from "@/api/product.types";
 import { useQuery } from "@tanstack/react-query";
 import ItemCardSkeleton from "../ItemCardSkeleton/ItemCardSkeleton";
+import { getNewProducts, getSaleProducts } from "@/api/product";
 
 type scrollVisibilityApiType = React.ContextType<typeof VisibilityContext>;
 
 type ItemScrollMenuProps = {
 	header: string;
-	getContents: () => Promise<Product[]>;
+	queryFunctionKey: QueryFunctionKeys;
 };
 
-function ItemScrollMenu({ header, getContents }: ItemScrollMenuProps) {
+type QueryFunctionKeys = "getSaleProducts" | "getNewProducts";
+const queryFunctions: {
+	[key: string]: () => Promise<Product[]>;
+} = {
+	getSaleProducts: getSaleProducts,
+	getNewProducts: getNewProducts,
+	// Add more functions as needed
+};
+
+function ItemScrollMenu({ header, queryFunctionKey }: ItemScrollMenuProps) {
 	const { isLoading, error, data } = useQuery({
-		queryKey: ["products", getContents],
-		queryFn: getContents,
+		queryKey: [queryFunctionKey],
+		queryFn: queryFunctions[queryFunctionKey],
 	});
 
-	const [items, setItems] = useState<Product[]>([]);
 	const { disableScroll, enableScroll } = usePreventBodyScroll();
-
-	useEffect(() => {
-		if (data) {
-			setItems(data);
-		}
-	}, [data]);
-
-	useEffect(() => {
-		console.error(error);
-	}, [error]);
 
 	return (
 		<>
@@ -52,8 +51,8 @@ function ItemScrollMenu({ header, getContents }: ItemScrollMenuProps) {
 						RightArrow={RightArrow}
 						onWheel={onWheel}
 					>
-						{!(isLoading || error)
-							? items.map((item) => (
+						{!(isLoading || error) && data
+							? data.map((item) => (
 									<div key={item.productId}>
 										<ItemCard
 											isLoading={isLoading}
