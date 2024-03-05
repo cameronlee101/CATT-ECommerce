@@ -1,6 +1,6 @@
 import { Product } from "./product.types";
 import { axios } from "./axios";
-import { Pages } from "@/app/pages";
+import { Categories } from "@/app/categories";
 
 export async function getProduct(productId: number) {
 	const mock: Product = {

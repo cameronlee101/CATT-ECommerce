@@ -1,5 +1,6 @@
 "use client";
 
+import { login } from "@/app/auth";
 import { GoogleLogin } from "@react-oauth/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -7,8 +8,10 @@ import { useRouter } from "next/navigation";
 function page() {
 	const router = useRouter();
 
-	if (!process.env.CLIENT_ID) {
-		alert("process.env.CLIENT_ID not set or not correctly setup");
+	if (!(process.env.GOOGLE_CLIENT_ID || process.env.SECRET_KEY)) {
+		alert(
+			"process.env.GOOGLE_CLIENT_ID or process.env.SECRET_KEY not set or not correctly setup"
+		);
 	}
 
 	return (
@@ -18,11 +21,9 @@ function page() {
 			<div className="flex flex-col flex-1 justify-center">
 				<div className="flex justify-center mb-8">
 					<GoogleLogin
-						onSuccess={(credentialResponse) => {
-							console.log(credentialResponse);
-							router.push("/");
-							// TODO: decode credentials and create a session cookie
-						}}
+						onSuccess={(credentialResponse) =>
+							login(credentialResponse).then(() => router.push("/"))
+						}
 						onError={() => {
 							console.log("Login Failed");
 						}}

@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	env: {
-		CLIENT_ID: process.env.CLIENT_ID,
+		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+		SECRET_KEY: process.env.SECRET_KEY,
 	},
 };
 

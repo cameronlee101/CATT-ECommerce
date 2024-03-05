@@ -9,10 +9,10 @@ import {
 	Input,
 } from "@nextui-org/react";
 import Image from "next/image";
-import { Pages } from "@/app/pages";
+import { Categories } from "@/app/categories";
 
 type TopNavbarProps = {
-	highlightLink?: Pages;
+	highlightLink?: Categories;
 };
 
 function TopNavbar({ highlightLink }: TopNavbarProps) {
@@ -27,7 +27,7 @@ function TopNavbar({ highlightLink }: TopNavbarProps) {
 				</NavbarBrand>
 			</NavbarContent>
 			<NavbarContent className="hidden sm:flex gap-4" justify="center">
-				{Object.values(Pages).map((item) => (
+				{Object.values(Categories).map((item) => (
 					<NavbarItem key={item}>
 						<Link
 							color={highlightLink == item ? "primary" : "foreground"}

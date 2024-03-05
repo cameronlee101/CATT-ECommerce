@@ -1,4 +1,4 @@
-import { getPageEnumVal } from "@/app/pages";
+import { getPageEnumVal } from "@/app/categories";
 import ItemGrid from "@/components/ItemGrid/ItemGrid";
 import TopNavbar from "@/components/TopNavbar/TopNavbar";
 
