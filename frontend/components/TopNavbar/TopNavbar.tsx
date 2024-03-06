@@ -10,6 +10,8 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import { Categories } from "@/app/categories";
+import { getSession } from "@/app/auth";
+import SigninButton from "../SigninButton/SigninButton";
 
 type TopNavbarProps = {
 	highlightLink?: Categories;
@@ -55,9 +57,7 @@ function TopNavbar({ highlightLink }: TopNavbarProps) {
 					/>
 				</NavbarItem>
 				<NavbarItem>
-					<Button as={Link} color="primary" href="/signin" variant="flat">
-						Sign In
-					</Button>
+					<SigninButton />
 				</NavbarItem>
 			</NavbarContent>
 		</Navbar>

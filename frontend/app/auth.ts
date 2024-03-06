@@ -1,8 +1,10 @@
 "use server";
 
+import { CredentialResponse } from "@react-oauth/google";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 const secretKey = process.env.SECRET_KEY;
 const key = new TextEncoder().encode(secretKey);
@@ -22,12 +24,22 @@ export async function decrypt(input: string): Promise<any> {
 	return payload;
 }
 
-export async function login(credentialResponse: any) {
-	// TODO: Verify credentials && get the user
+export async function getSessionEmail(): Promise<any> {
+	const session = await getSession();
+	if (session) {
+		const data = <any>jwt.decode(session.data);
+		if (data && data.email) {
+			return data.email;
+		}
+	}
+}
+
+export async function login(credentialResponse: CredentialResponse) {
+	const data = credentialResponse.credential;
 
 	// Create the session
 	const expires = new Date(Date.now() + 60 * 1000);
-	const session = await encrypt({ credentialResponse, expires });
+	const session = await encrypt({ data, expires });
 
 	// Save the session in a cookie
 	cookies().set("session", session, { expires, httpOnly: true });
