@@ -29,10 +29,12 @@ export async function decrypt(input: string): Promise<any> {
 	return payload;
 }
 
-export async function getSessionData(): Promise<any> {
+export async function getSessionUserData(): Promise<
+	GoogleCredentials | undefined
+> {
 	const session = await getSession();
 	if (session) {
-		const data = <any>jwt.decode(session.data);
+		const data = <GoogleCredentials>jwt.decode(session.data);
 		return data;
 	}
 }

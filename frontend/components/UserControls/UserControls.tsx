@@ -10,7 +10,7 @@ import {
 	DropdownTrigger,
 	Link,
 } from "@nextui-org/react";
-import { GoogleCredentials, getSessionData, logout } from "@/app/auth";
+import { GoogleCredentials, getSessionUserData, logout } from "@/app/auth";
 
 function UserControls() {
 	const [userInfo, setUserInfo] = useState<GoogleCredentials>();
@@ -20,7 +20,7 @@ function UserControls() {
 	}, []);
 
 	async function retrieveSessionData() {
-		const info = await getSessionData();
+		const info = await getSessionUserData();
 		setUserInfo(info);
 	}
 
