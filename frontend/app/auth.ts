@@ -9,6 +9,11 @@ import jwt from "jsonwebtoken";
 const secretKey = process.env.SECRET_KEY;
 const key = new TextEncoder().encode(secretKey);
 
+export type GoogleCredentials = {
+	email: string;
+	picture: string;
+};
+
 export async function encrypt(payload: any) {
 	return await new SignJWT(payload)
 		.setProtectedHeader({ alg: "HS256" })
@@ -24,13 +29,11 @@ export async function decrypt(input: string): Promise<any> {
 	return payload;
 }
 
-export async function getSessionEmail(): Promise<any> {
+export async function getSessionData(): Promise<any> {
 	const session = await getSession();
 	if (session) {
 		const data = <any>jwt.decode(session.data);
-		if (data && data.email) {
-			return data.email;
-		}
+		return data;
 	}
 }
 

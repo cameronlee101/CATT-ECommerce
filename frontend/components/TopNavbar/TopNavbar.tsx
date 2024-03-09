@@ -5,12 +5,10 @@ import {
 	NavbarContent,
 	NavbarItem,
 	Link,
-	Button,
 	Input,
 } from "@nextui-org/react";
 import Image from "next/image";
 import { Categories } from "@/app/categories";
-import { getSession } from "@/app/auth";
 import SigninButton from "../SigninButton/SigninButton";
 
 type TopNavbarProps = {
