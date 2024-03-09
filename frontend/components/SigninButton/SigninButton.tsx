@@ -2,34 +2,31 @@
 
 import { getSession } from "@/app/auth";
 import { Button, Link } from "@nextui-org/react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import UserControls from "../UserControls/UserControls";
+import { useQuery } from "@tanstack/react-query";
 
 const SigninButton = () => {
-	const [validSession, setValidSession] = useState(false);
-
-	useEffect(() => {
-		checkForSession();
-	}, []);
+	const { isLoading, data: session } = useQuery({
+		queryKey: ["session"],
+		queryFn: checkForSession,
+	});
 
 	async function checkForSession() {
 		const session = await getSession();
-		if (session) {
-			setValidSession(true);
-		} else {
-			setValidSession(false);
-		}
+		return session;
 	}
 
 	return (
 		<>
-			{validSession ? (
-				<UserControls />
-			) : (
-				<Button as={Link} color="primary" href="/signin" variant="flat">
-					Sign In
-				</Button>
-			)}
+			{!isLoading &&
+				(session ? (
+					<UserControls />
+				) : (
+					<Button as={Link} color="primary" href="/signin" variant="flat">
+						Sign In
+					</Button>
+				))}
 		</>
 	);
 };
