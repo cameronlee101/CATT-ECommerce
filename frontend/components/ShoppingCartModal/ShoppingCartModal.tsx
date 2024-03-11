@@ -12,17 +12,26 @@ import {
 	Badge,
 } from "@nextui-org/react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useQuery } from "@tanstack/react-query";
-import { getShoppingCartProducts } from "@/api/product";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getShoppingCartProducts } from "@/api/shoppingCart";
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
+import { useRouter } from "next/navigation";
+import { removeFromShoppingCart } from "@/api/shoppingCart";
 
 function ShoppingCartModal() {
-	const { isLoading, error, data } = useQuery({
+	const router = useRouter();
+
+	const { isLoading, error, data, refetch } = useQuery({
 		queryKey: ["Shopping Cart"],
 		queryFn: getShoppingCartProducts,
 	});
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+	const removeItemMutation = useMutation({
+		mutationFn: removeFromShoppingCart,
+		onSuccess: () => refetch(),
+	});
 
 	return (
 		<>
@@ -38,14 +47,22 @@ function ShoppingCartModal() {
 							<ModalHeader className="flex flex-col gap-1">
 								Shopping Cart
 							</ModalHeader>
-							<ModalBody className="overflow-y-auto max-h-[80vh]">
-								{data?.map((item) => <ShoppingCartItem item={item} />)}
+							<ModalBody className="overflow-y-auto max-h-[80vh] min-h-[80vh]">
+								{data?.map((item) => (
+									<ShoppingCartItem
+										item={item}
+										onItemRemove={removeItemMutation.mutate}
+									/>
+								))}
 							</ModalBody>
 							<ModalFooter>
 								<Button color="default" variant="light" onPress={onClose}>
 									Close
 								</Button>
-								<Button color="primary" onPress={onClose}>
+								<Button
+									color="primary"
+									onPress={() => router.push("/checkout")}
+								>
 									Check Out
 								</Button>
 							</ModalFooter>
