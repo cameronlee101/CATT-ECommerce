@@ -2,6 +2,7 @@
 
 import { login } from "@/app/auth";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import assert from "assert";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -13,6 +14,10 @@ function page() {
 			"process.env.GOOGLE_CLIENT_ID or process.env.SECRET_KEY not set or not correctly setup"
 		);
 	}
+	assert(
+		process.env.GOOGLE_CLIENT_ID && process.env.SECRET_KEY,
+		"env variable not set: GOOGLE_CLIENT_ID or SECRET_KEY"
+	);
 
 	return (
 		<main className="flex flex-col text-center min-h-screen p-8">

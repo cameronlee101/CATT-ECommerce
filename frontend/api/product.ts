@@ -1,6 +1,5 @@
 import { Product, ShoppingCartEntry } from "./product.types";
 import { axios } from "./axios";
-import { GoogleCredentials } from "@/app/auth";
 
 export async function getProduct(productId: number) {
 	const mock: Product = {
