@@ -43,7 +43,6 @@ function DeliveryDetails({
 	onInfoEdit,
 }: DeliveryDetailsProps) {
 	const [selectedOption, setSelectedOption] = useState("delivery");
-	const [errorMessage, setErrorMessage] = useState("");
 	const [formSubmitted, setFormSubmitted] = useState(false);
 
 	const [deliveryFormData, setDeliveryFormData] = useState<UserAddress>({
@@ -74,14 +73,12 @@ function DeliveryDetails({
 			Object.values(deliveryFormData).forEach((value, index) => {
 				if (value === "") {
 					validForm = false;
-					setErrorMessage("Error: one or more fields are empty");
 				}
 			});
 
 			if (validForm) {
 				onInfoSubmit("delivery", deliveryFormData);
 				setFormSubmitted(true);
-				setErrorMessage("");
 			}
 		}
 	};
@@ -148,7 +145,6 @@ function DeliveryDetails({
 								</SelectItem>
 							))}
 						</Select>
-						<p className="text-red-600">{errorMessage}</p>
 						<Button
 							type="submit"
 							color="primary"

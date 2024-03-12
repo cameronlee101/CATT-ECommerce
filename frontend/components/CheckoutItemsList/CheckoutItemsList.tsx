@@ -9,6 +9,7 @@ type CheckoutItemsListProps = {
 function CheckoutItemsList({ data }: CheckoutItemsListProps) {
 	return (
 		<div className="mx-4">
+			<h3 className="text-xl flex justify-center mb-2">Review Items:</h3>
 			<div className="max-h-[80vh] overflow-y-auto px-2">
 				{data?.map((item) => (
 					<div className="h-fit w-full my-2" key={item.product.productId}>

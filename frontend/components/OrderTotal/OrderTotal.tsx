@@ -1,30 +1,43 @@
 import { ShoppingCartEntry } from "@/api/product.types";
+import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 type OrderTotalProps = {
 	data: undefined | ShoppingCartEntry[];
+	acquisitionMethod: "delivery" | "pickup" | undefined;
 };
 
-function OrderTotal({ data }: OrderTotalProps) {
+function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 	const taxPercentage = 0.11;
+	const shippingPercentage = 0.15;
 
 	const [totalSubprice, setTotalSubprice] = useState(-1);
 	const [totalPrice, setTotalPrice] = useState(-1);
+	const [totalPriceVisible, setTotalPriceVisible] = useState(false);
 
 	useEffect(() => {
-		if (data) {
+		if (data && acquisitionMethod) {
 			let subtotal = 0;
 			for (let item of data) {
 				subtotal += item.quantity * item.product.price;
 			}
 			setTotalSubprice(Number(subtotal.toFixed(2)));
-			setTotalPrice(Number((subtotal * (1 + taxPercentage)).toFixed(2)));
-		}
-	}, [data]);
+			if (acquisitionMethod == "delivery") {
+				setTotalPrice(
+					Number(
+						(subtotal * (1 + taxPercentage + shippingPercentage)).toFixed(2)
+					)
+				);
+			}
 
-	return (
-		<div>
-			<h3 className="text-xl flex justify-center mb-2">Order Total:</h3>
+			setTotalPriceVisible(true);
+		} else {
+			setTotalPriceVisible(false);
+		}
+	}, [data, acquisitionMethod]);
+
+	function getSubtotalPrice() {
+		return (
 			<div>
 				{data?.map((item) => (
 					<div key={item.product.productId} className="flex flex-row gap-2">
@@ -36,13 +49,45 @@ function OrderTotal({ data }: OrderTotalProps) {
 				))}
 				<p>Total before taxes: ${totalSubprice.toFixed(2)}</p>
 			</div>
+		);
+	}
+
+	function getTotalPrice() {
+		return (
 			<div className="mt-4">
 				<p>
 					Tax (%{taxPercentage * 100}): $
 					{(totalSubprice * taxPercentage).toFixed(2)}
 				</p>
+				{acquisitionMethod == "delivery" && (
+					<p>
+						Shipping cost (%{shippingPercentage * 100}): $
+						{(totalSubprice * shippingPercentage).toFixed(2)}
+					</p>
+				)}
 				<p>Total after tax: ${totalPrice}</p>
 			</div>
+		);
+	}
+
+	return (
+		<div>
+			<h3 className="text-xl flex justify-center mb-2">Order Total:</h3>
+			{getSubtotalPrice()}
+			{totalPriceVisible ? (
+				<>
+					{getTotalPrice()}
+					{data && (
+						<Button color="primary" className="mt-10 w-full self-center">
+							Pay Now
+						</Button>
+					)}
+				</>
+			) : (
+				<div className="mt-4">
+					<p>Please select delivery or pickup to see total price and pay</p>
+				</div>
+			)}
 		</div>
 	);
 }
