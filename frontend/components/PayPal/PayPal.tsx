@@ -1,16 +1,21 @@
+"use client";
+
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import assert from "assert";
+import { createOrder, onTransactionApprove } from "@/api/paypal";
+import { OnApproveActions, OnApproveData } from "@paypal/paypal-js";
 
-// Renders errors or successfull transactions on the screen.
+// Renders errors or successful transactions on the screen.
 function Message({ content }: { content: string }) {
 	return <p>{content}</p>;
 }
 
 assert(process.env.PAYPAL_CLIENT_ID, "env variable not set: PAYPAL_CLIENT_ID");
 
-function App() {
+function PayPal() {
 	const initialOptions = {
+		"clientId": process.env.PAYPAL_CLIENT_ID || "",
 		"client-id": process.env.PAYPAL_CLIENT_ID,
 		"enable-funding": "paylater,venmo,card",
 		"disable-funding": "",
@@ -29,24 +34,7 @@ function App() {
 					}}
 					createOrder={async () => {
 						try {
-							const response = await fetch("/api/orders", {
-								method: "POST",
-								headers: {
-									"Content-Type": "application/json",
-								},
-								// use the "body" param to optionally pass additional order information
-								// like product ids and quantities
-								body: JSON.stringify({
-									cart: [
-										{
-											id: "YOUR_PRODUCT_ID",
-											quantity: "YOUR_PRODUCT_QUANTITY",
-										},
-									],
-								}),
-							});
-
-							const orderData = await response.json();
+							const orderData = await createOrder();
 
 							if (orderData.id) {
 								return orderData.id;
@@ -61,24 +49,12 @@ function App() {
 						} catch (error) {
 							console.error(error);
 							setMessage(`Could not initiate PayPal Checkout...${error}`);
+							return `Could not initiate PayPal Checkout...${error}`
 						}
 					}}
-					onApprove={async (
-						data: { orderID: any },
-						actions: { restart: () => any }
-					) => {
+					onApprove={async (data: OnApproveData, actions: OnApproveActions) => {
 						try {
-							const response = await fetch(
-								`/api/orders/${data.orderID}/capture`,
-								{
-									method: "POST",
-									headers: {
-										"Content-Type": "application/json",
-									},
-								}
-							);
-
-							const orderData = await response.json();
+							const orderData = await onTransactionApprove(data);	
 							// Three cases to handle:
 							//   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
 							//   (2) Other non-recoverable errors -> Show a failure message
@@ -123,4 +99,4 @@ function App() {
 	);
 }
 
-export default App;
+export default PayPal;

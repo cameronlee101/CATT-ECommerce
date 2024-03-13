@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { UserAddress } from "@/api/user.type";
 
-// TODO: refactor this page somehow?
+// TODO: refactor this page and related components somehow?
 function page() {
 	const [acquisitionMethod, setAcquisitionMethod] = useState<
 		"delivery" | "pickup"
@@ -31,13 +31,11 @@ function page() {
 			setAcquisitionMethod("delivery");
 		} else {
 			setAcquisitionMethod("pickup");
-			console.error("todo");
 		}
 	}
 
 	function onInfoEdit() {
 		setAcquisitionMethod(undefined);
-		console.error("todo");
 	}
 
 	return (

@@ -1,6 +1,6 @@
 import { ShoppingCartEntry } from "@/api/product.types";
-import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import PayPal from "../PayPal/PayPal";
 
 type OrderTotalProps = {
 	data: undefined | ShoppingCartEntry[];
@@ -35,6 +35,9 @@ function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 				}
 
 				setTotalPriceVisible(true);
+			}
+			else {
+				setTotalPriceVisible(false);
 			}
 		} else {
 			setTotalPriceVisible(false);
@@ -83,14 +86,14 @@ function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 				<>
 					{getTotalPrice()}
 					{data && (
-						<Button color="primary" className="mt-10 w-full self-center">
-							Pay Now
-						</Button>
+						<div className="mt-4">
+							<PayPal/>
+						</div>
 					)}
 				</>
 			) : (
 				<div className="mt-4">
-					<p>Please select delivery or pickup to see total price and pay</p>
+					<p>Please choose delivery or pickup to see total price and pay</p>
 				</div>
 			)}
 		</div>
