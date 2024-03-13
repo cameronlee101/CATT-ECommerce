@@ -16,21 +16,26 @@ function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 	const [totalPriceVisible, setTotalPriceVisible] = useState(false);
 
 	useEffect(() => {
-		if (data && acquisitionMethod) {
+		if (data) {
 			let subtotal = 0;
 			for (let item of data) {
 				subtotal += item.quantity * item.product.price;
 			}
 			setTotalSubprice(Number(subtotal.toFixed(2)));
-			if (acquisitionMethod == "delivery") {
-				setTotalPrice(
-					Number(
-						(subtotal * (1 + taxPercentage + shippingPercentage)).toFixed(2)
-					)
-				);
-			}
 
-			setTotalPriceVisible(true);
+			if (acquisitionMethod) {
+				if (acquisitionMethod == "delivery") {
+					setTotalPrice(
+						Number(
+							(subtotal * (1 + taxPercentage + shippingPercentage)).toFixed(2)
+						)
+					);
+				} else if (acquisitionMethod == "pickup") {
+					setTotalPrice(Number((subtotal * (1 + taxPercentage)).toFixed(2)));
+				}
+
+				setTotalPriceVisible(true);
+			}
 		} else {
 			setTotalPriceVisible(false);
 		}
