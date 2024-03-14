@@ -2,6 +2,12 @@ import { OnApproveData } from "@paypal/paypal-js";
 import { axios } from "./axios";
 import { getSessionUserData } from "@/app/auth";
 import { AcquisitionMethod } from "./checkout.types";
+import assert from "assert";
+
+assert(
+	process.env.BACKEND_SERVER_BASE_URL,
+	"env variable not set: BACKEND_SERVER_BASE_URL"
+);
 
 export async function createOrder(acquisitionMethod: AcquisitionMethod) {
 	const uemail = (await getSessionUserData())?.email;

@@ -7,6 +7,9 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { getUserType } from "@/api/user";
 import { UserTypes } from "@/api/user.type";
+import assert from "assert";
+
+assert(process.env.SECRET_KEY, "env variable not set: SECRET_KEY");
 
 const secretKey = process.env.SECRET_KEY;
 const key = new TextEncoder().encode(secretKey);
