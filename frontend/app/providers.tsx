@@ -6,7 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import assert from "assert";
 import { useState } from "react";
 
-assert(process.env.GOOGLE_CLIENT_ID, "env variable not set: GOOGLE_CLIENT_ID");
+assert(
+	process.env.GOOGLE_CLIENT_ID,
+	"env variable not set or made publically available: GOOGLE_CLIENT_ID"
+);
 
 export function Providers({ children }: { children: React.ReactNode }) {
 	const [queryClient] = useState(

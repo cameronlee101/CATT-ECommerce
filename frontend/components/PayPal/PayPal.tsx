@@ -13,7 +13,10 @@ function Message({ content }: { content: string }) {
 	return <p>{content}</p>;
 }
 
-assert(process.env.PAYPAL_CLIENT_ID, "env variable not set: PAYPAL_CLIENT_ID");
+assert(
+	process.env.PAYPAL_CLIENT_ID,
+	"env variable not set or made publically available: PAYPAL_CLIENT_ID"
+);
 
 type PayPalType = {
 	acquisitionMethod: AcquisitionMethod | undefined;

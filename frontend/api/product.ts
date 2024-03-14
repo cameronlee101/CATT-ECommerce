@@ -1,4 +1,4 @@
-import { Product, ShoppingCartEntry } from "./product.types";
+import { Product } from "./product.types";
 import { axios } from "./axios";
 
 export async function getProduct(productId: number) {
