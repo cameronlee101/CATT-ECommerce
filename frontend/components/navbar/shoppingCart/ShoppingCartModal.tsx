@@ -14,11 +14,11 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getShoppingCartProducts } from "@/api/shoppingCart";
-import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
+import { ShoppingCartItem } from "./ShoppingCartItem";
 import { useRouter } from "next/navigation";
 import { removeFromShoppingCart } from "@/api/shoppingCart";
 
-function ShoppingCartModal() {
+export function ShoppingCartModal() {
 	const router = useRouter();
 
 	const { isLoading, error, data, refetch } = useQuery({
@@ -75,5 +75,3 @@ function ShoppingCartModal() {
 		</>
 	);
 }
-
-export default ShoppingCartModal;

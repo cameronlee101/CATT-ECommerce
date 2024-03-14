@@ -4,7 +4,7 @@ import { login } from "@/app/auth";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
 
-function GoogleLoginButton() {
+export function GoogleLoginButton() {
 	const router = useRouter();
 
 	return (
@@ -18,5 +18,3 @@ function GoogleLoginButton() {
 		/>
 	);
 }
-
-export default GoogleLoginButton;

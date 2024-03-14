@@ -37,7 +37,7 @@ type DeliveryDetailsProps = {
 };
 
 // TODO: figure out a better way to manage the form and get the values when submitting
-function DeliveryDetails({
+export function DeliveryDetails({
 	data,
 	onInfoSubmit,
 	onInfoEdit,
@@ -233,5 +233,3 @@ function DeliveryDetails({
 		</div>
 	);
 }
-
-export default DeliveryDetails;

@@ -1,6 +1,6 @@
 import { ShoppingCartEntry } from "@/api/product.types";
 import { useEffect, useState } from "react";
-import PayPal from "../PayPal/PayPal";
+import { PayPal } from "./PayPal";
 import { AcquisitionMethod } from "@/api/checkout.types";
 
 type OrderTotalProps = {
@@ -8,7 +8,7 @@ type OrderTotalProps = {
 	acquisitionMethod: AcquisitionMethod | undefined;
 };
 
-function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
+export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 	const taxPercentage = 0.11;
 	const shippingPercentage = 0.15;
 
@@ -99,5 +99,3 @@ function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 		</div>
 	);
 }
-
-export default OrderTotal;

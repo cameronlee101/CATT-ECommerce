@@ -1,7 +1,6 @@
 import { ShoppingCartEntry } from "@/api/product.types";
 import { Card, CardBody } from "@nextui-org/react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 type ShoppingCartItemProps = {
@@ -9,7 +8,10 @@ type ShoppingCartItemProps = {
 	onItemRemove: (productId: number) => void;
 };
 
-function ShoppingCartItem({ item, onItemRemove }: ShoppingCartItemProps) {
+export function ShoppingCartItem({
+	item,
+	onItemRemove,
+}: ShoppingCartItemProps) {
 	return (
 		<div className="h-fit w-full">
 			<Card className="h-auto">
@@ -40,5 +42,3 @@ function ShoppingCartItem({ item, onItemRemove }: ShoppingCartItemProps) {
 		</div>
 	);
 }
-
-export default ShoppingCartItem;

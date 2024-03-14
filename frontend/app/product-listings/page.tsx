@@ -1,4 +1,4 @@
-import TopNavbar from "@/components/TopNavbar/TopNavbar";
+import { TopNavbar } from "@/components/navbar";
 import Link from "next/link";
 import React from "react";
 

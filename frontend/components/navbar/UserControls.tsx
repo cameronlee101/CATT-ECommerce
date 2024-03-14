@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ShoppingCartModal from "../ShoppingCartModal/ShoppingCartModal";
+import { ShoppingCartModal } from "./shoppingCart";
 import {
 	Avatar,
 	Dropdown,
@@ -16,10 +16,9 @@ import {
 	getSessionUserType,
 	logout,
 } from "@/app/auth";
-import { useQuery } from "@tanstack/react-query";
 import { UserTypes } from "@/api/user.type";
 
-function UserControls() {
+export function UserControls() {
 	const [userInfo, setUserInfo] = useState<GoogleCredentials>();
 	const [userType, setUserType] = useState<UserTypes>(UserTypes.Customer);
 
@@ -114,5 +113,3 @@ function UserControls() {
 		</div>
 	);
 }
-
-export default UserControls;

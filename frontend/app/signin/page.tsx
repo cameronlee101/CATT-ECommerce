@@ -1,4 +1,4 @@
-import GoogleLoginButton from "@/components/GoogleLoginButton/GoogleLoginButton";
+import { GoogleLoginButton } from "@/components/GoogleLoginButton";
 import Link from "next/link";
 
 function page() {

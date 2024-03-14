@@ -22,7 +22,7 @@ type PayPalType = {
 	acquisitionMethod: AcquisitionMethod | undefined;
 };
 
-function PayPal({ acquisitionMethod }: PayPalType) {
+export function PayPal({ acquisitionMethod }: PayPalType) {
 	const router = useRouter();
 
 	const initialOptions = {
@@ -114,5 +114,3 @@ function PayPal({ acquisitionMethod }: PayPalType) {
 		</div>
 	);
 }
-
-export default PayPal;

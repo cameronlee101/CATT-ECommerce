@@ -6,7 +6,7 @@ type CheckoutItemsListProps = {
 	data: undefined | ShoppingCartEntry[];
 };
 
-function CheckoutItemsList({ data }: CheckoutItemsListProps) {
+export function CheckoutItemsList({ data }: CheckoutItemsListProps) {
 	return (
 		<div className="mx-4">
 			<h3 className="text-xl flex justify-center mb-2">Review Items:</h3>
@@ -36,5 +36,3 @@ function CheckoutItemsList({ data }: CheckoutItemsListProps) {
 		</div>
 	);
 }
-
-export default CheckoutItemsList;
