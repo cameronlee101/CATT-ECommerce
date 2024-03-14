@@ -3,17 +3,18 @@ import { axios } from "./axios";
 import { getSessionUserData } from "@/app/auth";
 import { AcquisitionMethod } from "./checkout.types";
 
-const baseUrl = "http://localhost:8888";
-
 export async function createOrder(acquisitionMethod: AcquisitionMethod) {
 	const uemail = (await getSessionUserData())?.email;
 
 	if (uemail) {
 		try {
-			const response = await axios.post(`${baseUrl}/api/orders`, {
-				uemail: uemail,
-				acquisitionMethod: acquisitionMethod,
-			});
+			const response = await axios.post(
+				`${process.env.BACKEND_SERVER_BASE_URL}/api/orders`,
+				{
+					uemail: uemail,
+					acquisitionMethod: acquisitionMethod,
+				}
+			);
 
 			return response.data;
 		} catch (error: any) {
@@ -36,7 +37,7 @@ export async function createOrder(acquisitionMethod: AcquisitionMethod) {
 export async function onTransactionApprove(data: OnApproveData) {
 	try {
 		const response = await axios.post(
-			`${baseUrl}/api/orders/${data.orderID}/capture`
+			`${process.env.BACKEND_SERVER_BASE_URL}/api/orders/${data.orderID}/capture`
 		);
 
 		return response.data;

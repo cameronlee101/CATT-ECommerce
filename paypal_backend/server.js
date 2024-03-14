@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import "dotenv/config"; // allows using the environment variables from .env file
 import cors from "cors";
 
-const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
+const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8080 } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
 const app = express();
 
@@ -55,7 +55,7 @@ const createOrder = async (uemail, acquisitionMethod) => {
 			{
 				amount: {
 					currency_code: "CAD",
-					value: "100.00",
+					value: "123.45",
 				},
 			},
 		],
@@ -115,9 +115,11 @@ async function handleResponse(response) {
 	}
 }
 
+// passed through body:
+// uemail: user's email
+// acquisitionMethod: either "delivery" or "pickup", used to determine whether to add shipping fees or not to the user's order, magnitude of shipping fee address saved on the user's account
 app.post("/api/orders", async (req, res) => {
 	try {
-		// use the cart information passed from the front-end to calculate the order amount detals
 		const { uemail, acquisitionMethod } = req.body;
 		const { jsonResponse, httpStatusCode } = await createOrder(
 			uemail,
@@ -130,6 +132,8 @@ app.post("/api/orders", async (req, res) => {
 	}
 });
 
+// body params:
+// orderID: an ID that is created from PayPal, don't worry about this one
 app.post("/api/orders/:orderID/capture", async (req, res) => {
 	try {
 		const { orderID } = req.params;
