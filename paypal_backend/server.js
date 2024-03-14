@@ -1,7 +1,7 @@
-import express from "express";
-import fetch from "node-fetch";
-import "dotenv/config"; // allows using the environment variables from .env file
-import cors from "cors";
+const express = require("express");
+const fetch = require("node-fetch");
+require("dotenv").config(); // allows using the environment variables from .env file
+const cors = require("cors");
 
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8080 } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
@@ -115,7 +115,7 @@ async function handleResponse(response) {
 	}
 }
 
-// passed through body:
+// body params:
 // uemail: user's email
 // acquisitionMethod: either "delivery" or "pickup", used to determine whether to add shipping fees or not to the user's order, magnitude of shipping fee address saved on the user's account
 app.post("/api/orders", async (req, res) => {
