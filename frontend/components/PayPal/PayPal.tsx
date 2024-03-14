@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import assert from "assert";
-import { createOrder, onTransactionApprove } from "@/api/paypal";
+import { createOrder, onTransactionApprove } from "@/api/checkout";
 import { OnApproveActions, OnApproveData } from "@paypal/paypal-js";
+import { useRouter } from "next/navigation";
+import { AcquisitionMethod } from "@/api/checkout.types";
 
 // Renders errors or successful transactions on the screen.
 function Message({ content }: { content: string }) {
@@ -13,13 +15,20 @@ function Message({ content }: { content: string }) {
 
 assert(process.env.PAYPAL_CLIENT_ID, "env variable not set: PAYPAL_CLIENT_ID");
 
-function PayPal() {
+type PayPalType = {
+	acquisitionMethod: AcquisitionMethod | undefined;
+};
+
+function PayPal({ acquisitionMethod }: PayPalType) {
+	const router = useRouter();
+
 	const initialOptions = {
-		"clientId": process.env.PAYPAL_CLIENT_ID || "",
+		clientId: process.env.PAYPAL_CLIENT_ID || "",
 		"client-id": process.env.PAYPAL_CLIENT_ID,
 		"enable-funding": "paylater,venmo,card",
 		"disable-funding": "",
 		"data-sdk-integration-source": "integrationbuilder_sc",
+		currency: "CAD",
 	};
 
 	const [message, setMessage] = useState("");
@@ -34,7 +43,10 @@ function PayPal() {
 					}}
 					createOrder={async () => {
 						try {
-							const orderData = await createOrder();
+							if (!acquisitionMethod) {
+								throw Error("Delivery or pickup option has not been chosen");
+							}
+							const orderData = await createOrder(acquisitionMethod);
 
 							if (orderData.id) {
 								return orderData.id;
@@ -49,12 +61,12 @@ function PayPal() {
 						} catch (error) {
 							console.error(error);
 							setMessage(`Could not initiate PayPal Checkout...${error}`);
-							return `Could not initiate PayPal Checkout...${error}`
+							return `Could not initiate PayPal Checkout...${error}`;
 						}
 					}}
 					onApprove={async (data: OnApproveData, actions: OnApproveActions) => {
 						try {
-							const orderData = await onTransactionApprove(data);	
+							const orderData = await onTransactionApprove(data);
 							// Three cases to handle:
 							//   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
 							//   (2) Other non-recoverable errors -> Show a failure message
@@ -84,6 +96,7 @@ function PayPal() {
 									orderData,
 									JSON.stringify(orderData, null, 2)
 								);
+								router.push("/checkout/success");
 							}
 						} catch (error) {
 							console.error(error);

@@ -1,10 +1,11 @@
 import { ShoppingCartEntry } from "@/api/product.types";
 import { useEffect, useState } from "react";
 import PayPal from "../PayPal/PayPal";
+import { AcquisitionMethod } from "@/api/checkout.types";
 
 type OrderTotalProps = {
 	data: undefined | ShoppingCartEntry[];
-	acquisitionMethod: "delivery" | "pickup" | undefined;
+	acquisitionMethod: AcquisitionMethod | undefined;
 };
 
 function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
@@ -35,8 +36,7 @@ function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 				}
 
 				setTotalPriceVisible(true);
-			}
-			else {
+			} else {
 				setTotalPriceVisible(false);
 			}
 		} else {
@@ -87,7 +87,7 @@ function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 					{getTotalPrice()}
 					{data && (
 						<div className="mt-4">
-							<PayPal/>
+							<PayPal acquisitionMethod={acquisitionMethod} />
 						</div>
 					)}
 				</>

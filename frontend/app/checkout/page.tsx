@@ -3,17 +3,17 @@
 import { getShoppingCartProducts } from "@/api/shoppingCart";
 import CheckoutItemsList from "@/components/CheckoutItemsList/CheckoutItemsList";
 import OrderTotal from "@/components/OrderTotal/OrderTotal";
-import DeliveryDetails from "@/components/DeliveryDetails/DeliveryDetails";
+import DeliveryDetails from "@/components/AcquisitionDetails/AcquisitionDetails";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import { UserAddress } from "@/api/user.type";
+import { AcquisitionMethod } from "@/api/checkout.types";
 
 // TODO: refactor this page and related components somehow?
 function page() {
-	const [acquisitionMethod, setAcquisitionMethod] = useState<
-		"delivery" | "pickup"
-	>();
+	const [acquisitionMethod, setAcquisitionMethod] =
+		useState<AcquisitionMethod>();
 	const [userAddress, setUserAddress] = useState<UserAddress>();
 
 	const { isLoading, error, data } = useQuery({
@@ -23,7 +23,7 @@ function page() {
 	});
 
 	function onInfoSubmit(
-		acquisitionMethod: "delivery" | "pickup",
+		acquisitionMethod: AcquisitionMethod,
 		deliveryDetails?: UserAddress
 	) {
 		if (acquisitionMethod == "delivery") {
