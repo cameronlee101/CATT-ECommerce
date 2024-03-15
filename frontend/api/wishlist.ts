@@ -26,12 +26,12 @@ export async function getWishlistProducts(): Promise<WishlistEntry[]> {
 	return wishlistEntries;
 
 	// backend call
-	const uemail = await getSessionUserEmail();
-	if (uemail) {
+	const user_email = await getSessionUserEmail();
+	if (user_email) {
 		try {
 			let response = await axios.get<WishlistEntry[]>("/???", {
 				data: {
-					uemail: uemail
+					user_email: user_email
 				}
 			})
 	
@@ -52,8 +52,8 @@ export async function addToWishlist(product_id: number, quantity: number):Promis
 	return 
 
 	// backend call
-	const uemail = await getSessionUserEmail();
-	if (uemail) {
+	const user_email = await getSessionUserEmail();
+	if (user_email) {
 		try {
 			await axios.post("/???", {
 				data: {
@@ -79,8 +79,8 @@ export async function removeFromWishlist(product_id: number):Promise<void> {
 	return;
 
 	// backend call
-	const uemail = await getSessionUserEmail();
-	if (uemail) {
+	const user_email = await getSessionUserEmail();
+	if (user_email) {
 		try {
 			await axios.post("/???", {
 				data: {

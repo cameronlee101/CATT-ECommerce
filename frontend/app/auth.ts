@@ -68,8 +68,8 @@ export async function getSessionUserType(): Promise<UserTypes | undefined> {
 export async function getSessionUserEmail(): Promise<string | undefined> {
 	const session = await getSession();
 	if (session) {
-		const userEmail = (<GoogleCredentials>jwt.decode(session.googleJWT)).email;
-		return userEmail;
+		const user_email = (<GoogleCredentials>jwt.decode(session.googleJWT)).email;
+		return user_email;
 	} else {
 		console.error("Could not retrieve user email");
 		return undefined;
@@ -83,10 +83,10 @@ export async function login(
 ): Promise<void> {
 	const googleJWT = credentialResponse.credential;
 	if (googleJWT) {
-		let uemail = (<GoogleCredentials>jwt.decode(googleJWT)).email;
+		let user_email = (<GoogleCredentials>jwt.decode(googleJWT)).email;
 
-		if (uemail) {
-			const userType = await getUserType(uemail);
+		if (user_email) {
+			const userType = await getUserType(user_email);
 
 			if (userType) {
 				// Create the session

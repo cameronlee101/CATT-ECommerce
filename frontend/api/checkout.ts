@@ -5,12 +5,12 @@ import { AcquisitionMethod } from "./checkout.types";
 
 // Creates a new paypal order
 export async function createOrder(acquisitionMethod: AcquisitionMethod) {
-	const uemail = (await getSessionUserData())?.email;
+	const user_email = (await getSessionUserData())?.email;
 
-	if (uemail) {
+	if (user_email) {
 		try {
 			const response = await axios.post(`/api/orders`, {
-				uemail: uemail,
+				user_email: user_email,
 				acquisitionMethod: acquisitionMethod,
 			});
 

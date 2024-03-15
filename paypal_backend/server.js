@@ -44,8 +44,8 @@ const generateAccessToken = async () => {
  * Create an order to start the transaction.
  * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
  */
-const createOrder = async (uemail, acquisitionMethod) => {
-	// TODO: using uemail, get the user's shopping cart, total it up, add fees (depending on delivery or pickup, and address of delivery), and pass the total to the paypal API
+const createOrder = async (user_email, acquisitionMethod) => {
+	// TODO: using user_email, get the user's shopping cart, total it up, add fees (depending on delivery or pickup, and address of delivery), and pass the total to the paypal API
 
 	const accessToken = await generateAccessToken();
 	const url = `${paypal_base}/v2/checkout/orders`;
@@ -116,13 +116,13 @@ async function handleResponse(response) {
 }
 
 // body params:
-// uemail: user's email
+// user_email: user's email
 // acquisitionMethod: either "delivery" or "pickup", used to determine whether to add shipping fees or not to the user's order, magnitude of shipping fee address saved on the user's account
 app.post("/api/orders", async (req, res) => {
 	try {
-		const { uemail, acquisitionMethod } = req.body;
+		const { user_email, acquisitionMethod } = req.body;
 		const { jsonResponse, httpStatusCode } = await createOrder(
-			uemail,
+			user_email,
 			acquisitionMethod
 		);
 		res.status(httpStatusCode).json(jsonResponse);

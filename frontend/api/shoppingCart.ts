@@ -26,12 +26,12 @@ export async function getShoppingCartProducts(): Promise<ShoppingCartEntry[]> {
 	return shoppingCartEntries;
 
 	// backend call
-	const uemail = await getSessionUserEmail();
-	if (uemail) {
+	const user_email = await getSessionUserEmail();
+	if (user_email) {
 		try {
 			let response = await axios.get<ShoppingCartEntry[]>("/???", {
 				data: {
-					uemail: uemail
+					user_email: user_email
 				}
 			})
 	
@@ -52,8 +52,8 @@ export async function addToShoppingCart(product_id: number, quantity: number): P
 	return 
 
 	// backend call
-	const uemail = await getSessionUserEmail();
-	if (uemail) {
+	const user_email = await getSessionUserEmail();
+	if (user_email) {
 		try {
 			await axios.post("/???", {
 				data: {
@@ -79,8 +79,8 @@ export async function removeFromShoppingCart(product_id: number): Promise<void> 
 	return
 
 	// backend call
-	const uemail = await getSessionUserEmail();
-	if (uemail) {
+	const user_email = await getSessionUserEmail();
+	if (user_email) {
 		try {
 			await axios.post("/???", {
 				data: {
