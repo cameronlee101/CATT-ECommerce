@@ -94,7 +94,6 @@ export function DeliveryDetails({
 				<form onSubmit={handleSubmit} className="flex flex-col">
 					<Input
 						className="mb-1"
-						type="text"
 						label="Street Address"
 						name="street_address"
 						placeholder="Enter your street address"
@@ -104,7 +103,6 @@ export function DeliveryDetails({
 					/>
 					<Input
 						className="mb-1"
-						type="text"
 						label="Postal Code"
 						name="postal_code"
 						placeholder="Enter your postal code"
@@ -114,7 +112,6 @@ export function DeliveryDetails({
 					/>
 					<Input
 						className="mb-1"
-						type="city"
 						label="City"
 						name="city"
 						placeholder="Enter your city"
