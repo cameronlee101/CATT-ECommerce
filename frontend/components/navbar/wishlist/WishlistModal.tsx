@@ -36,13 +36,13 @@ export function WishlistModal({ open, onWishlistClose }: WishlistModalProps) {
 		if (open) {
 			onOpen();
 		}
-	}, [open]);
+	}, [open, onOpen]);
 
 	useEffect(() => {
 		if (!isOpen) {
 			onWishlistClose();
 		}
-	}, [isOpen]);
+	}, [isOpen, onWishlistClose]);
 
 	return (
 		<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -52,7 +52,7 @@ export function WishlistModal({ open, onWishlistClose }: WishlistModalProps) {
 						<ModalHeader className="flex flex-col gap-1">
 							<p>My Wishlist</p>
 							<p className="text-sm text-bold">
-								Click on an item to go to it's page!
+								Click on an item to go to it&apos;s page!
 							</p>
 						</ModalHeader>
 						<ModalBody className="overflow-y-auto max-h-[80vh] min-h-[75vh]">

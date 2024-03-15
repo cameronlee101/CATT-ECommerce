@@ -16,12 +16,15 @@ for (let i = 1; i <= numberOfProducts; i++) {
 	products.push(generateProduct(i));
 }
 
+// gets the current user's wishlist
 export async function getWishlistProducts(): Promise<Product[]> {
 	return products;
 }
 
+// adds a product to the current user's wishlist
 export async function addToWishlist(productId: number, quantity: number) {}
 
+// removes a products from the current user's wishlist
 export async function removeFromWishlist(productId: number) {
 	products = products.filter((item) => {
 		return item.productId != productId;

@@ -26,8 +26,8 @@ type QueryFunctionKeys = "getSaleProducts" | "getNewProducts";
 const queryFunctions: {
 	[key: string]: () => Promise<Product[]>;
 } = {
-	getSaleProducts: getSaleProducts,
-	getNewProducts: getNewProducts,
+	getSaleProducts: () => getSaleProducts(20),
+	getNewProducts: () => getNewProducts(20),
 	// Add more functions as needed
 };
 

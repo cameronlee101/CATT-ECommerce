@@ -82,7 +82,8 @@ export function DeliveryDetails({
 			}
 		}
 	};
-
+	
+	// a form that asks for the user's address
 	function getDeliveryDetails(): React.JSX.Element {
 		return (
 			<div>
@@ -145,6 +146,7 @@ export function DeliveryDetails({
 		);
 	}
 
+	// confirms with the user the address of warehouse(s) to pick up items from
 	function getPickupDetails(): React.JSX.Element {
 		return (
 			<div>
@@ -165,6 +167,7 @@ export function DeliveryDetails({
 		);
 	}
 
+	// displays the address info that the user entered previously
 	function displayDeliveryDetails(): React.JSX.Element {
 		return (
 			<div>
@@ -187,6 +190,7 @@ export function DeliveryDetails({
 		);
 	}
 
+	// displays the pickup info that the user confirmed previously
 	function displayPickupDetails(): React.JSX.Element {
 		return (
 			<div>
@@ -206,6 +210,8 @@ export function DeliveryDetails({
 		);
 	}
 
+	// user can choose either delivery or pickup and confirm/fill out a form depending on the option chosen
+	// after the form is submitted, displays a confirmation of the info that the user entered/confirmed for either delivery or pickup
 	return !formSubmitted ? (
 		<div>
 			<h3 className="text-xl flex justify-center mb-2">

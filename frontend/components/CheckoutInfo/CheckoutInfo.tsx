@@ -9,6 +9,10 @@ import { useState } from "react";
 import { UserAddress } from "@/api/user.type";
 import { AcquisitionMethod } from "@/api/checkout.types";
 
+// displays 3 "sections"
+// 1) all the items' in the users cart which will be purchased
+// 2) a form asking if a user wanted delivery or pickup, and then displays relevant information
+// 3) the order total amount and paypal payment buttons
 export function CheckoutInfo() {
 	const [acquisitionMethod, setAcquisitionMethod] =
 		useState<AcquisitionMethod>();

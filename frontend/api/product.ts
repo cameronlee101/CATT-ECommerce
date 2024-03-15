@@ -1,6 +1,7 @@
 import { Product } from "./product.types";
 import { axios } from "./axios";
 
+// given a product's id, returns all that product's info
 export async function getProduct(productId: number) {
 	const mock: Product = {
 		productId: productId,
@@ -12,7 +13,8 @@ export async function getProduct(productId: number) {
 	return mock;
 }
 
-export async function getNewProducts(): Promise<Product[]> {
+// returns a number of the newest products
+export async function getNewProducts(limit: number): Promise<Product[]> {
 	const generateProduct = (productId: number): Product => ({
 		productId: productId,
 		name: "Wooden Stool",
@@ -31,7 +33,8 @@ export async function getNewProducts(): Promise<Product[]> {
 	return products;
 }
 
-export async function getSaleProducts(): Promise<Product[]> {
+// returns a number of products that are on sale
+export async function getSaleProducts(limit?: number): Promise<Product[]> {
 	const generateProduct = (productId: number): Product => ({
 		productId: productId,
 		name: "Wooden Stool",
@@ -50,6 +53,7 @@ export async function getSaleProducts(): Promise<Product[]> {
 	return products;
 }
 
+// returns basic info on all the products that fulfill a set of filters
 export async function getCategoryProducts(
 	filters: string[]
 ): Promise<Product[]> {

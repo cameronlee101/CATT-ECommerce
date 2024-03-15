@@ -88,7 +88,6 @@ export function PayPal({ acquisitionMethod }: PayPalType) {
 								);
 							} else {
 								// (3) Successful transaction -> Show confirmation or thank you message
-								// Or go to another URL:  actions.redirect('thank_you.html');
 								const transaction =
 									orderData.purchase_units[0].payments.captures[0];
 								setMessage(

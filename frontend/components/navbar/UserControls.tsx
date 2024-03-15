@@ -19,6 +19,7 @@ import {
 import { UserTypes } from "@/api/user.type";
 import { WishlistModal } from "./wishlist";
 
+// This component displays when the user is logged, allows them to access their shopping cart, wishlist, logout, etc.
 export function UserControls() {
 	const [userInfo, setUserInfo] = useState<GoogleCredentials>();
 	const [userType, setUserType] = useState<UserTypes>(UserTypes.Customer);

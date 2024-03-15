@@ -3,6 +3,7 @@ import { axios } from "./axios";
 import { getSessionUserData } from "@/app/auth";
 import { AcquisitionMethod } from "./checkout.types";
 
+// Creates a new paypal order
 export async function createOrder(acquisitionMethod: AcquisitionMethod) {
 	const uemail = (await getSessionUserData())?.email;
 
@@ -31,6 +32,7 @@ export async function createOrder(acquisitionMethod: AcquisitionMethod) {
 	}
 }
 
+// Gets information after a paypal payment is approved 
 export async function onTransactionApprove(data: OnApproveData) {
 	try {
 		const response = await axios.post(`/api/orders/${data.orderID}/capture`);
