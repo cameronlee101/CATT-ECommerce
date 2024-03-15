@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { getUserType } from "@/api/user";
-import { UserTypes } from "@/api/user.type";
+import { UserTypes } from "@/api/user.types";
 
 if (!process.env.SECRET_KEY) {
 	throw Error("env variable not set: SECRET_KEY");

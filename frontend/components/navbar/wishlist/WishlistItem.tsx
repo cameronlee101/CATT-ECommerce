@@ -8,19 +8,19 @@ import React from "react";
 
 type WishlistItemProps = {
 	item: Product;
-	onItemRemove: (productId: number) => void;
+	onItemRemove: (product_id: number) => void;
 };
 
 export function WishlistItem({ item, onItemRemove }: WishlistItemProps) {
 	const router = useRouter();
 
 	function handleItemClick(event:React.MouseEvent) {
-		router.push(`/product/${item.productId}`)
+		router.push(`/product/${item.product_id}`)
 	}
 
 	function handleItemRemove(event:React.MouseEvent) {
 		event.stopPropagation(); 
-		onItemRemove(item.productId)
+		onItemRemove(item.product_id)
 	}
 
 	// TODO: make a clear distinction between the two onclicks
@@ -34,13 +34,13 @@ export function WishlistItem({ item, onItemRemove }: WishlistItemProps) {
 				<CardBody className="flex flex-row justify-between items-end">
 					<div className="flex items-center">
 						<Image
-							src={item.imgSrc}
-							alt={`${item.name} image`}
+							src={item.base_price}
+							alt={`${item.product_name} image`}
 							width={50}
 							height={50}
 						/>
 						<div>
-							<p>{item.name}</p>
+							<p>{item.product_name}</p>
 							<p>Price: ${item.price.toFixed(2)}</p>
 						</div>
 					</div>

@@ -48,7 +48,7 @@ export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 		return (
 			<div>
 				{data?.map((item) => (
-					<div key={item.product.productId} className="flex flex-row gap-2">
+					<div key={item.product.product_id} className="flex flex-row gap-2">
 						<p>${item.product.price.toFixed(2)}</p>
 						<p>x</p>
 						<p>{item.quantity}</p>

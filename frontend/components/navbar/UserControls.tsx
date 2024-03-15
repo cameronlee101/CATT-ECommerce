@@ -16,7 +16,7 @@ import {
 	getSessionUserType,
 	logout,
 } from "@/app/auth";
-import { UserTypes } from "@/api/user.type";
+import { UserTypes } from "@/api/user.types";
 import { WishlistModal } from "./wishlist";
 
 // This component displays when the user is logged, allows them to access their shopping cart, wishlist, logout, etc.

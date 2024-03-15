@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getSessionUserType } from "./app/auth";
-import { UserTypes } from "./api/user.type";
+import { UserTypes } from "./api/user.types";
 
 // TODO: create middleware for checkout
 export async function middleware(request: NextRequest) {

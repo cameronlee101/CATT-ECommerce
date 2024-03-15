@@ -1,6 +1,6 @@
 import { AcquisitionMethod } from "@/api/checkout.types";
 import { ShoppingCartEntry } from "@/api/product.types";
-import { UserAddress } from "@/api/user.type";
+import { UserAddress } from "@/api/user.types";
 import {
 	Button,
 	Input,

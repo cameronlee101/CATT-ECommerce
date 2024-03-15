@@ -6,7 +6,7 @@ import { OrderTotal } from "./OrderTotal";
 import { DeliveryDetails } from "./AcquisitionDetails";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { UserAddress } from "@/api/user.type";
+import { UserAddress } from "@/api/user.types";
 import { AcquisitionMethod } from "@/api/checkout.types";
 
 // displays 3 "sections"

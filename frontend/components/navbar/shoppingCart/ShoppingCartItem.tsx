@@ -5,7 +5,7 @@ import React from "react";
 
 type ShoppingCartItemProps = {
 	item: ShoppingCartEntry;
-	onItemRemove: (productId: number) => void;
+	onItemRemove: (product_id: number) => void;
 };
 
 export function ShoppingCartItem({
@@ -18,13 +18,13 @@ export function ShoppingCartItem({
 				<CardBody className="flex flex-row justify-between items-end">
 					<div className="flex items-center">
 						<Image
-							src={item.product.imgSrc}
-							alt={`${item.product.name} image`}
+							src={item.product.base_price}
+							alt={`${item.product.product_name} image`}
 							width={50}
 							height={50}
 						/>
 						<div>
-							<p>{item.product.name}</p>
+							<p>{item.product.product_name}</p>
 							<p>Price: ${item.product.price.toFixed(2)}</p>
 							<p>Quantity: {item.quantity}</p>
 						</div>
@@ -32,7 +32,7 @@ export function ShoppingCartItem({
 					<div>
 						<p
 							className="text-blue-600 text-sm cursor-pointer"
-							onClick={() => onItemRemove(item.product.productId)}
+							onClick={() => onItemRemove(item.product.product_id)}
 						>
 							Remove
 						</p>

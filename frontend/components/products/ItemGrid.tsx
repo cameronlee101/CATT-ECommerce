@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { ItemCard } from "./ItemCard";
 import { ItemCardSkeleton } from "./ItemCardSkeleton";
-import { getCategoryProducts } from "@/api/product";
+import { getFilteredProducts } from "@/api/product";
 import { Pagination } from "@nextui-org/react";
 
 type ItemGridProps = {
@@ -17,7 +17,7 @@ type QueryFunctionKeys = "getCategoryProducts";
 const queryFunctions: {
 	[key: string]: (filters: string[]) => Promise<Product[]>;
 } = {
-	getCategoryProducts: getCategoryProducts,
+	getCategoryProducts: getFilteredProducts,
 	// Add more functions as needed
 };
 
@@ -37,7 +37,7 @@ export function ItemGrid({ queryFunctionKey, filters }: ItemGridProps) {
 			<div className="flex flex-wrap gap-y-8 flex-1 justify-items-center items-center">
 				{!(isLoading || error) && data
 					? data.map((item) => (
-							<div key={item.productId} className="mx-auto">
+							<div key={item.product_id} className="mx-auto">
 								<ItemCard isLoading={isLoading} error={error} product={item} />
 							</div>
 						))

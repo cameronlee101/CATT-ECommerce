@@ -56,7 +56,7 @@ export function ItemScrollMenu({
 					>
 						{!(isLoading || error) && data
 							? data.map((item) => (
-									<div key={item.productId}>
+									<div key={item.product_id}>
 										<ItemCard
 											isLoading={isLoading}
 											error={error}
