@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { getSessionUserType } from "./app/auth";
 import { UserTypes } from "./api/user.type";
 
+// TODO: create middleware for checkout
 export async function middleware(request: NextRequest) {
 	const userType = await getSessionUserType();
 	if (request.nextUrl.pathname.startsWith("/become-vendor")) {

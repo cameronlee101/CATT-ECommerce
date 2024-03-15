@@ -17,14 +17,20 @@ import {
 	logout,
 } from "@/app/auth";
 import { UserTypes } from "@/api/user.type";
+import { WishlistModal } from "./wishlist";
 
 export function UserControls() {
 	const [userInfo, setUserInfo] = useState<GoogleCredentials>();
 	const [userType, setUserType] = useState<UserTypes>(UserTypes.Customer);
+	const [wishlistOpen, setWishlistOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		retrieveSessionData();
 	}, []);
+
+	function onWishlistClose() {
+		setWishlistOpen(false);
+	}
 
 	async function retrieveSessionData() {
 		const userInfo = await getSessionUserData();
@@ -76,40 +82,45 @@ export function UserControls() {
 	}
 
 	return (
-		<div className="flex items-center gap-6">
-			<ShoppingCartModal />
-			<Dropdown placement="bottom-end">
-				<DropdownTrigger>
-					<Avatar
-						isBordered
-						as="button"
-						className="transition-transform"
-						src={userInfo?.picture}
-					/>
-				</DropdownTrigger>
-				<DropdownMenu aria-label="Profile Actions" variant="flat">
-					<DropdownItem key="profile" className="h-14 gap-2">
-						<p className="font-semibold">Signed in as</p>
-						<p className="font-semibold">
-							{userInfo?.email}
-							<br />({userType})
-						</p>
-					</DropdownItem>
-					<DropdownItem key="wishlist">My Wishlist</DropdownItem>
-					{getUserSpecificOptions()}
-					<DropdownItem
-						key="logout"
-						as={Link}
-						href="/"
-						color="danger"
-						onClick={async () => {
-							await logout();
-						}}
-					>
-						Log Out
-					</DropdownItem>
-				</DropdownMenu>
-			</Dropdown>
-		</div>
+		<>
+			<WishlistModal open={wishlistOpen} onWishlistClose={onWishlistClose} />
+			<div className="flex items-center gap-6">
+				<ShoppingCartModal />
+				<Dropdown placement="bottom-end">
+					<DropdownTrigger>
+						<Avatar
+							isBordered
+							as="button"
+							className="transition-transform"
+							src={userInfo?.picture}
+						/>
+					</DropdownTrigger>
+					<DropdownMenu aria-label="Profile Actions" variant="flat">
+						<DropdownItem key="profile">
+							<p className="font-semibold">Signed in as</p>
+							<p className="font-semibold">
+								{userInfo?.email}
+								<br />({userType})
+							</p>
+						</DropdownItem>
+						<DropdownItem key="wishlist" onClick={() => setWishlistOpen(true)}>
+							My Wishlist
+						</DropdownItem>
+						{getUserSpecificOptions()}
+						<DropdownItem
+							key="logout"
+							as={Link}
+							href="/"
+							color="danger"
+							onClick={async () => {
+								await logout();
+							}}
+						>
+							Log Out
+						</DropdownItem>
+					</DropdownMenu>
+				</Dropdown>
+			</div>
+		</>
 	);
 }

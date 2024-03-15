@@ -1,4 +1,4 @@
-import { getPageEnumVal } from "@/app/categories";
+import { getPageEnumVal } from "@/api/categories.types";
 import { TopNavbar } from "@/components/navbar";
 import { ItemGrid } from "@/components/products";
 

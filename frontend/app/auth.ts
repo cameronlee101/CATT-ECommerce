@@ -48,6 +48,7 @@ export async function getSessionUserData(): Promise<
 		const userData = <GoogleCredentials>jwt.decode(session.googleJWT);
 		return userData;
 	} else {
+		console.error("Could not retrieve user session");
 		return undefined;
 	}
 }
@@ -58,6 +59,7 @@ export async function getSessionUserType(): Promise<UserTypes | undefined> {
 	if (session) {
 		return session.userType;
 	} else {
+		console.error("Could not retrieve user type");
 		return undefined;
 	}
 }
@@ -69,6 +71,7 @@ export async function getSessionUserEmail(): Promise<string | undefined> {
 		const userEmail = (<GoogleCredentials>jwt.decode(session.googleJWT)).email;
 		return userEmail;
 	} else {
+		console.error("Could not retrieve user email");
 		return undefined;
 	}
 }
@@ -115,9 +118,13 @@ export async function logout() {
 
 // Returns the session cookie of the current user if there is one
 export async function getSession(): Promise<any | null> {
-	const session = cookies().get("session")?.value;
-	if (!session) return null;
-	return await decrypt(session);
+	try {
+		const session = cookies().get("session")?.value;
+		if (!session) return null;
+		return await decrypt(session);
+	} catch (error) {
+		console.error("Error occurred when retrieving session: " + error);
+	}
 }
 
 // Refreshes the current session, effectively resetting the expiry time

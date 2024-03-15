@@ -19,7 +19,6 @@ for (let i = 1; i <= numberOfProducts; i++) {
 	} as ShoppingCartEntry);
 }
 
-// note: backend for these functions needs to access the session cookie to get shopping cart for this user
 export async function getShoppingCartProducts(): Promise<ShoppingCartEntry[]> {
 	return shoppingCartEntries;
 }
