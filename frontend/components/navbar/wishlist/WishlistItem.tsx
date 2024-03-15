@@ -14,13 +14,22 @@ type WishlistItemProps = {
 export function WishlistItem({ item, onItemRemove }: WishlistItemProps) {
 	const router = useRouter();
 
+	function handleItemClick(event:React.MouseEvent) {
+		router.push(`/product/${item.productId}`)
+	}
+
+	function handleItemRemove(event:React.MouseEvent) {
+		event.stopPropagation(); 
+		onItemRemove(item.productId)
+	}
+
 	// TODO: make a clear distinction between the two onclicks
 	return (
 		<div className="h-fit w-full">
 			<Card
 				className="h-auto w-full"
 				isPressable
-				onClick={() => router.push(`/product/${item.productId}`)}
+				onClick={handleItemClick}
 			>
 				<CardBody className="flex flex-row justify-between items-end">
 					<div className="flex items-center">
@@ -38,7 +47,7 @@ export function WishlistItem({ item, onItemRemove }: WishlistItemProps) {
 					<div>
 						<p
 							className="text-blue-600 text-sm cursor-pointer"
-							onClick={() => onItemRemove(item.productId)}
+							onClick={handleItemRemove}
 						>
 							Remove
 						</p>
