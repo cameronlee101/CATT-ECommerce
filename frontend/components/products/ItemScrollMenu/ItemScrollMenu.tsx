@@ -46,13 +46,12 @@ export function ItemScrollMenu({
 		<>
 			<div className="w-full">
 				<h3 className="text-large font-bold uppercase">{header}</h3>
-				<div onMouseEnter={disableScroll} onMouseLeave={enableScroll}>
+				<div>
 					<ScrollMenu
 						separatorClassName="mx-1"
 						scrollContainerClassName="p-3"
 						LeftArrow={LeftArrow}
 						RightArrow={RightArrow}
-						onWheel={onWheel}
 					>
 						{!(isLoading || error) && data
 							? data.map((item) => (
