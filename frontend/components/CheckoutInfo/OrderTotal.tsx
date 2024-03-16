@@ -20,7 +20,7 @@ export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 		if (data) {
 			let subtotal = 0;
 			for (let item of data) {
-				subtotal += item.quantity * item.product.price;
+				subtotal += item.quantity * item.product.base_price;
 			}
 			setTotalSubprice(Number(subtotal.toFixed(2)));
 
@@ -49,10 +49,10 @@ export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
 			<div>
 				{data?.map((item) => (
 					<div key={item.product.product_id} className="flex flex-row gap-2">
-						<p>${item.product.price.toFixed(2)}</p>
+						<p>${item.product.base_price.toFixed(2)}</p>
 						<p>x</p>
 						<p>{item.quantity}</p>
-						<p>= ${(item.product.price * item.quantity).toFixed(2)}</p>
+						<p>= ${(item.product.base_price * item.quantity).toFixed(2)}</p>
 					</div>
 				))}
 				<p>Total before taxes: ${totalSubprice.toFixed(2)}</p>

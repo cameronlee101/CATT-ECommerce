@@ -29,10 +29,10 @@ export function ItemCard({ isLoading, error, product }: ItemCardProps) {
 				<Image
 					alt="Card background"
 					className="object-cover rounded-xl pb-2"
-					src={product && product.base_price}
+					src={product && product.img_src}
 					width={270}
 				/>
-				<p>${product && product.price.toFixed(2)}</p>
+				<p>${product && product.base_price.toFixed(2)}</p>
 				<p>{product && product.description}</p>
 			</CardBody>
 		</Card>

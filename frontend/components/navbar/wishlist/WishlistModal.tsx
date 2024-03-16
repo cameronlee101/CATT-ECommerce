@@ -57,9 +57,9 @@ export function WishlistModal({ open, onWishlistClose }: WishlistModalProps) {
 						</ModalHeader>
 						<ModalBody className="overflow-y-auto max-h-[80vh] min-h-[75vh]">
 							{data?.map((item) => (
-								<div key={item.product_id}>
+								<div key={item.product.product_id}>
 									<WishlistItem
-										item={item}
+										item={item.product}
 										onItemRemove={removeItemMutation.mutate}
 									/>
 								</div>

@@ -2,12 +2,14 @@ import { Product } from "./product.types";
 import { axios } from "./axios";
 
 // given a product's id, returns all that product's info
-export async function getProduct(product_id: number):Promise<Product|undefined> {
+export async function getProduct(
+	product_id: number
+): Promise<Product | undefined> {
 	const mock: Product = {
 		product_id: product_id,
 		product_name: "Wooden Stool",
-		base_price: "/images/wood-stool.jpg",
-		price: 15.2,
+		img_src: "/images/wood-stool.jpg",
+		base_price: 15.2,
 		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 	};
 	return mock;
@@ -16,14 +18,13 @@ export async function getProduct(product_id: number):Promise<Product|undefined> 
 	try {
 		let response = await axios.get<Product>("/???", {
 			data: {
-				product_id: product_id
-			}
-		})
+				product_id: product_id,
+			},
+		});
 
-		return response.data
-	}
-	catch (error) {
-		console.error(error)
+		return response.data;
+	} catch (error) {
+		console.error(error);
 	}
 }
 
@@ -32,8 +33,8 @@ export async function getNewProducts(limit: number): Promise<Product[]> {
 	const generateProduct = (product_id: number): Product => ({
 		product_id: product_id,
 		product_name: "Wooden Stool",
-		base_price: "/images/wood-stool.jpg",
-		price: 15.2,
+		img_src: "/images/wood-stool.jpg",
+		base_price: 15.2,
 		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 	});
 
@@ -50,14 +51,13 @@ export async function getNewProducts(limit: number): Promise<Product[]> {
 	try {
 		let response = await axios.get<Product[]>("/newestProducts", {
 			data: {
-				limit: limit
-			}
-		})
+				limit: limit,
+			},
+		});
 
-		return response.data
-	}
-	catch (error) {
-		console.error(error)
+		return response.data;
+	} catch (error) {
+		console.error(error);
 	}
 }
 
@@ -66,8 +66,8 @@ export async function getSaleProducts(limit?: number): Promise<Product[]> {
 	const generateProduct = (product_id: number): Product => ({
 		product_id: product_id,
 		product_name: "Wooden Stool",
-		base_price: "/images/wood-stool.jpg",
-		price: 15.2,
+		img_src: "/images/wood-stool.jpg",
+		base_price: 15.2,
 		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 	});
 
@@ -82,18 +82,17 @@ export async function getSaleProducts(limit?: number): Promise<Product[]> {
 
 	// backend call
 	try {
-    let requestData = {}; 
+		let requestData = {};
 
-    if (limit != undefined) {
+		if (limit != undefined) {
 			requestData = { data: { limit: limit } };
-    }
+		}
 
-    let response = await axios.get<Product[]>("/productsOnSale", requestData);
+		let response = await axios.get<Product[]>("/productsOnSale", requestData);
 
-		return response.data
-	}
-	catch (error) {
-		console.error(error)
+		return response.data;
+	} catch (error) {
+		console.error(error);
 	}
 }
 
@@ -104,8 +103,8 @@ export async function getFilteredProducts(
 	const generateProduct = (product_id: number): Product => ({
 		product_id: product_id,
 		product_name: "Wooden Stool",
-		base_price: "/images/wood-stool.jpg",
-		price: 15.2,
+		img_src: "/images/wood-stool.jpg",
+		base_price: 15.2,
 		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 	});
 
@@ -122,13 +121,12 @@ export async function getFilteredProducts(
 	try {
 		let response = await axios.get<Product[]>("/???", {
 			data: {
-				filters: filters
-			}
-		})
+				filters: filters,
+			},
+		});
 
-		return response.data
-	}
-	catch (error) {
-		console.error(error)
+		return response.data;
+	} catch (error) {
+		console.error(error);
 	}
 }

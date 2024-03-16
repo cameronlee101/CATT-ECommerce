@@ -1,13 +1,13 @@
 import { getSessionUserEmail } from "@/app/auth";
-import {axios} from "./axios";
+import { axios } from "./axios";
 import { Product, WishlistEntry } from "./product.types";
 
 // mock entries
 const generateProduct = (product_id: number): Product => ({
 	product_id: product_id,
 	product_name: "Wooden Stool",
-	base_price: "/images/wood-stool.jpg",
-	price: 15.2,
+	img_src: "/images/wood-stool.jpg",
+	base_price: 15.2,
 	description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 });
 
@@ -31,25 +31,29 @@ export async function getWishlistProducts(): Promise<WishlistEntry[]> {
 		try {
 			let response = await axios.get<WishlistEntry[]>("/???", {
 				data: {
-					user_email: user_email
-				}
-			})
-	
-			return response.data
+					user_email: user_email,
+				},
+			});
+
+			return response.data;
+		} catch (error) {
+			console.error(error);
 		}
-		catch (error) {
-			console.error(error)
-		}
-	}
-	else {
-		console.error("Could not retrieve user's wishlist")
-		return []
+	} else {
+		console.error("Could not retrieve user's wishlist");
+		return [];
 	}
 }
 
 // adds a product to the current user's wishlist
-export async function addToWishlist(product_id: number, quantity: number):Promise<void> {
-	return 
+// TODO: deal with duplicates
+export async function addToWishlist(
+	product_id: number,
+	quantity: number
+): Promise<void> {
+	let newProduct = generateProduct(product_id);
+	wishlistEntries.push({ product: newProduct, quantity: quantity });
+	return;
 
 	// backend call
 	const user_email = await getSessionUserEmail();
@@ -59,20 +63,18 @@ export async function addToWishlist(product_id: number, quantity: number):Promis
 				data: {
 					product_id: product_id,
 					quantity: quantity,
-				}
-			})
+				},
+			});
+		} catch (error) {
+			console.error(error);
 		}
-		catch (error) {
-			console.error(error)
-		}
-	}
-	else {
-		console.error("Could not add to user's wishlist")
+	} else {
+		console.error("Could not add to user's wishlist");
 	}
 }
 
 // removes a products from the current user's wishlist
-export async function removeFromWishlist(product_id: number):Promise<void> {
+export async function removeFromWishlist(product_id: number): Promise<void> {
 	wishlistEntries = wishlistEntries.filter((item) => {
 		return item.product.product_id != product_id;
 	});
@@ -85,14 +87,12 @@ export async function removeFromWishlist(product_id: number):Promise<void> {
 			await axios.post("/???", {
 				data: {
 					product_id: product_id,
-				}
-			})
+				},
+			});
+		} catch (error) {
+			console.error(error);
 		}
-		catch (error) {
-			console.error(error)
-		}
-	}
-	else {
-		console.error("Could not remove from user's wishlist")
+	} else {
+		console.error("Could not remove from user's wishlist");
 	}
 }

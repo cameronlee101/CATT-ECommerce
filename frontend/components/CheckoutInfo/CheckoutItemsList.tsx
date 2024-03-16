@@ -17,14 +17,14 @@ export function CheckoutItemsList({ data }: CheckoutItemsListProps) {
 							<CardBody className="flex flex-row justify-between items-end">
 								<div className="flex items-center">
 									<Image
-										src={item.product.base_price}
+										src={item.product.img_src}
 										alt={`${item.product.product_name} image`}
 										width={50}
 										height={50}
 									/>
 									<div>
 										<p>{item.product.product_name}</p>
-										<p>Price: ${item.product.price.toFixed(2)}</p>
+										<p>Price: ${item.product.base_price.toFixed(2)}</p>
 										<p>Quantity: {item.quantity}</p>
 									</div>
 								</div>
