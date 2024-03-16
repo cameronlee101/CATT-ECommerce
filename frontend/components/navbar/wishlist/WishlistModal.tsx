@@ -45,7 +45,7 @@ export function WishlistModal({ open, onWishlistClose }: WishlistModalProps) {
 	}, [isOpen, onWishlistClose]);
 
 	return (
-		<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+		<Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-h-[85vh] min-h-[85vh]">
 			<ModalContent>
 				{(onClose) => (
 					<>
@@ -53,9 +53,9 @@ export function WishlistModal({ open, onWishlistClose }: WishlistModalProps) {
 							<p>My Wishlist</p>
 							<p className="text-sm text-bold">
 								Click on an item to go to it&apos;s page!
-							</p>
+							</p>	
 						</ModalHeader>
-						<ModalBody className="overflow-y-auto max-h-[80vh] min-h-[75vh]">
+						<ModalBody className="overflow-y-auto">
 							{data?.map((item) => (
 								<div key={item.product.product_id}>
 									<WishlistItem

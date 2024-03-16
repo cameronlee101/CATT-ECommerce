@@ -17,7 +17,7 @@ type TopNavbarProps = {
 
 export function TopNavbar({ highlightLink }: TopNavbarProps) {
 	return (
-		<Navbar isBordered shouldHideOnScroll>
+		<Navbar isBordered shouldHideOnScroll maxWidth="full">
 			<NavbarContent justify="start">
 				<NavbarBrand>
 					<Link href="/" className="font-bold text-inherit">

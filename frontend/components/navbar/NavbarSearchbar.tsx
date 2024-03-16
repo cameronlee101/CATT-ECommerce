@@ -24,7 +24,7 @@ export function NavbarSearchbar() {
 	return (
 		<Input
 			classNames={{
-				base: "max-w-full sm:max-w-[10rem] h-10",
+				base: "min-w-[10rem] max-w-[20rem] h-10",
 				mainWrapper: "h-full",
 				input: "text-small",
 				inputWrapper:

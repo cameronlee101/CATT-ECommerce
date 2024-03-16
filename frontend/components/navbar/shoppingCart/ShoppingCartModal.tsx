@@ -40,14 +40,14 @@ export function ShoppingCartModal() {
 					<ShoppingCartIcon />
 				</Badge>
 			</div>
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+			<Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-h-[85vh] min-h-[85vh]">
 				<ModalContent>
 					{(onClose) => (
 						<>
 							<ModalHeader className="flex flex-col gap-1">
 								Shopping Cart
 							</ModalHeader>
-							<ModalBody className="overflow-y-auto max-h-[80vh] min-h-[80vh]">
+							<ModalBody className="overflow-y-auto">
 								{data?.map((item) => (
 									<div key={item.product.product_id}>
 										<ShoppingCartItem
