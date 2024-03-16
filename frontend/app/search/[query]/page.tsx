@@ -1,5 +1,5 @@
 import { TopNavbar } from "@/components/navbar";
-import { ItemGrid } from "@/components/products";
+import { Filters, ItemGrid } from "@/components/products";
 
 function page({ params }: { params: { query: string } }) {
 	const queryString = decodeURI(params.query);
@@ -12,12 +12,7 @@ function page({ params }: { params: { query: string } }) {
 					Showing Results For: {queryString}
 				</h3>
 				<div className="flex flex-1 w-full mb-10 mt-8">
-					<div
-						className="flex justify-center items-center text-center border border-blue-500 w-80"
-						style={{ height: "800px" }}
-					>
-						Filters
-					</div>
+					<Filters />
 					<ItemGrid
 						queryFunctionKey={"getCategoryProducts"}
 						filters={["queryString"]}
