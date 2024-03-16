@@ -1,4 +1,4 @@
-import { CheckoutInfo } from "@/components/CheckoutInfo";
+import { CheckoutInfo } from "@/components/checkout-page";
 import Link from "next/link";
 
 function page() {
