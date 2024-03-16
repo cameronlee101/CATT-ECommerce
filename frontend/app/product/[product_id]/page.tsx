@@ -3,10 +3,9 @@
 import { getProduct } from "@/api/product";
 import { addToShoppingCart } from "@/api/shoppingCart";
 import { addToWishlist } from "@/api/wishlist";
-import { getSession } from "@/app/auth";
 import { TopNavbar } from "@/components/navbar";
 import { Button } from "@nextui-org/react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,27 +16,32 @@ function page({ params }: { params: { product_id: number } }) {
 	const [selectedQuantity, setSelectedQuantity] = useState(1);
 
 	const { isLoading, error, data } = useQuery({
-		queryKey: ["stuff"],
+		queryKey: ["Product", params.product_id],
 		queryFn: () => getProduct(params.product_id),
 	});
 
-	async function addItemToShoppingCart() {
-		const session = await getSession();
+	// queryClient and query invalidation used to force shopping cart and wishlist to refetch the updated contents
+	const queryClient = useQueryClient();
 
-		if (session) {
+	async function addItemToShoppingCart() {
+		try {
 			await addToShoppingCart(params.product_id, selectedQuantity);
-		} else {
+			queryClient.invalidateQueries({queryKey: ["Shopping Cart"]})
+		}
+		catch(error) {
 			router.push("/signin");
+			console.error("Could not add item to shopping cart")
 		}
 	}
 
 	async function addItemToWishlist() {
-		const session = await getSession();
-
-		if (session) {
+		try {
 			await addToWishlist(params.product_id, selectedQuantity);
-		} else {
+			queryClient.invalidateQueries({queryKey: ["Wishlist"]})
+		}
+		catch(error) {
 			router.push("/signin");
+			console.error("Could not add item to shopping cart")
 		}
 	}
 
@@ -55,7 +59,7 @@ function page({ params }: { params: { product_id: number } }) {
 							style={{ flexGrow: 0.85 }}
 						>
 							<Image
-								src={data?.img_src || ""}
+								src={data?.img_src || "/images/grey.jpg"}
 								alt="Product Image"
 								fill={true}
 							></Image>

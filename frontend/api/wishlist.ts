@@ -46,13 +46,14 @@ export async function getWishlistProducts(): Promise<WishlistEntry[]> {
 }
 
 // adds a product to the current user's wishlist
-// TODO: deal with duplicates
 export async function addToWishlist(
 	product_id: number,
 	quantity: number
 ): Promise<void> {
 	let newProduct = generateProduct(product_id);
-	wishlistEntries.push({ product: newProduct, quantity: quantity });
+	if (!wishlistEntries.find((item) => { return item.product.product_id == newProduct.product_id})) {
+		wishlistEntries.push({ product: newProduct, quantity: quantity });
+	}
 	return;
 
 	// backend call

@@ -46,14 +46,14 @@ export async function getShoppingCartProducts(): Promise<ShoppingCartEntry[]> {
 }
 
 // adds a product to the current user's shopping cart
-// TODO: deal with duplicates
-// TOOD: somehow refresh shopping cart after adding a product
 export async function addToShoppingCart(
 	product_id: number,
 	quantity: number
 ): Promise<void> {
 	let newProduct = generateProduct(product_id);
-	shoppingCartEntries.push({ product: newProduct, quantity: quantity });
+	if (!shoppingCartEntries.find((item) => { return item.product.product_id == newProduct.product_id})) {
+		shoppingCartEntries.push({ product: newProduct, quantity: quantity });
+	}
 	return;
 
 	// backend call
