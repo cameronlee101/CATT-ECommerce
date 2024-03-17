@@ -1,6 +1,6 @@
 import { getPageEnumVal } from "@/api/categories.types";
 import { TopNavbar } from "@/components/navbar";
-import { Filters, ItemGrid } from "@/components/products";
+import { ItemsAndFilters } from "@/components/products";
 
 function page({ params }: { params: { categoryName: string } }) {
   const categoryNameEnumVal = getPageEnumVal(params.categoryName);
@@ -13,13 +13,7 @@ function page({ params }: { params: { categoryName: string } }) {
           <div className="flex justify-center items-center text-center w-full h-60 border border-blue-500">
             Representative image
           </div>
-          <div className="flex flex-1 w-full mb-10 mt-8">
-            <Filters />
-            <ItemGrid
-              queryFunctionKey={"getCategoryProducts"}
-              filters={[categoryNameEnumVal.toString()]}
-            />
-          </div>
+          <ItemsAndFilters categoryName={categoryNameEnumVal} />
         </main>
       </>
     );
