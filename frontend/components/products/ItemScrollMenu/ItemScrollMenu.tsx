@@ -18,74 +18,74 @@ import { getNewProducts, getSaleProducts } from "@/api/product";
 type scrollVisibilityApiType = React.ContextType<typeof VisibilityContext>;
 
 type ItemScrollMenuProps = {
-	header: string;
-	queryFunctionKey: QueryFunctionKeys;
+  header: string;
+  queryFunctionKey: QueryFunctionKeys;
 };
 
 type QueryFunctionKeys = "getSaleProducts" | "getNewProducts";
 const queryFunctions: {
-	[key: string]: () => Promise<Product[]>;
+  [key: string]: () => Promise<Product[]>;
 } = {
-	getSaleProducts: () => getSaleProducts(20),
-	getNewProducts: () => getNewProducts(20),
-	// Add more functions as needed
+  getSaleProducts: () => getSaleProducts(20),
+  getNewProducts: () => getNewProducts(20),
+  // Add more functions as needed
 };
 
 export function ItemScrollMenu({
-	header,
-	queryFunctionKey,
+  header,
+  queryFunctionKey,
 }: ItemScrollMenuProps) {
-	const { isLoading, error, data } = useQuery({
-		queryKey: [queryFunctionKey],
-		queryFn: queryFunctions[queryFunctionKey],
-	});
+  const { isLoading, error, data } = useQuery({
+    queryKey: [queryFunctionKey],
+    queryFn: queryFunctions[queryFunctionKey],
+  });
 
-	const { disableScroll, enableScroll } = usePreventBodyScroll();
+  const { disableScroll, enableScroll } = usePreventBodyScroll();
 
-	return (
-		<>
-			<div className="w-full">
-				<h3 className="text-large font-bold uppercase">{header}</h3>
-				<div>
-					<ScrollMenu
-						separatorClassName="mx-1"
-						scrollContainerClassName="p-3"
-						LeftArrow={LeftArrow}
-						RightArrow={RightArrow}
-					>
-						{!(isLoading || error) && data
-							? data.map((item) => (
-									<div key={item.product_id}>
-										<ItemCard
-											isLoading={isLoading}
-											error={error}
-											product={item}
-										/>
-									</div>
-								))
-							: Array.from({ length: 6 }, (_, index) => (
-									<div key={index}>
-										<ItemCardSkeleton />
-									</div>
-								))}
-					</ScrollMenu>
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="w-full">
+        <h3 className="text-large font-bold uppercase">{header}</h3>
+        <div>
+          <ScrollMenu
+            separatorClassName="mx-1"
+            scrollContainerClassName="p-3"
+            LeftArrow={LeftArrow}
+            RightArrow={RightArrow}
+          >
+            {!(isLoading || error) && data
+              ? data.map((item) => (
+                  <div key={item.product_id}>
+                    <ItemCard
+                      isLoading={isLoading}
+                      error={error}
+                      product={item}
+                    />
+                  </div>
+                ))
+              : Array.from({ length: 6 }, (_, index) => (
+                  <div key={index}>
+                    <ItemCardSkeleton />
+                  </div>
+                ))}
+          </ScrollMenu>
+        </div>
+      </div>
+    </>
+  );
 }
 
 function onWheel(apiObj: scrollVisibilityApiType, ev: React.WheelEvent): void {
-	const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
+  const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
 
-	if (isThouchpad) {
-		ev.stopPropagation();
-		return;
-	}
+  if (isThouchpad) {
+    ev.stopPropagation();
+    return;
+  }
 
-	if (ev.deltaY < 0) {
-		apiObj.scrollNext();
-	} else if (ev.deltaY > 0) {
-		apiObj.scrollPrev();
-	}
+  if (ev.deltaY < 0) {
+    apiObj.scrollNext();
+  } else if (ev.deltaY > 0) {
+    apiObj.scrollPrev();
+  }
 }
