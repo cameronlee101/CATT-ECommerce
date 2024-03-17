@@ -1,1 +1,1 @@
-export * from "./RatingFilter"
+export * from "./RatingFilter";

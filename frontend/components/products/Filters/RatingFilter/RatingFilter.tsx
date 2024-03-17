@@ -1,29 +1,26 @@
 // source: https://codesandbox.io/p/sandbox/multi-range-slider-react-js-forked-4uq1uo?file=%2Fsrc%2Fcomponent%2FmultiRangeSlider%2FMultiRangeSlider.js%3A83%2C24
 
-"use client"
+"use client";
 
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./ratingFilter.module.css";
 import classNames from "classnames";
 
 type RatingFilterProps = {
-  min: number,
-  max: number,
-  onChange: ({min, max}: {min: number, max:number}) => void,
-}
+  min: number;
+  max: number;
+  onChange: ({ min, max }: { min: number; max: number }) => void;
+};
 
 export const RatingFilter = ({ min, max, onChange }: RatingFilterProps) => {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
   const minValRef = useRef(min);
   const maxValRef = useRef(max);
-  const range = useRef<HTMLDivElement|null>(null);
+  const range = useRef<HTMLDivElement | null>(null);
 
   // Convert to percentage
-  const getPercent = useCallback(
-    (value: number) => Math.round(((value - min) / (max - min)) * 100),
-    [min, max]
-  );
+  const getPercent = useCallback((value: number) => Math.round(((value - min) / (max - min)) * 100), [min, max]);
 
   // Set width of the range to decrease from the left side
   useEffect(() => {
