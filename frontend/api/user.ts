@@ -14,7 +14,9 @@ export async function createNewUser(user_email: string, user_type: UserTypes) {
   }
 }
 
-export async function getUserType(user_email: string): Promise<UserTypes | undefined> {
+export async function getUserType(
+  user_email: string,
+): Promise<UserTypes | undefined> {
   return UserTypes.Vendor;
 
   // backend call
@@ -48,7 +50,10 @@ export async function updateUserType(user_email: string, user_type: UserTypes) {
   }
 }
 
-export async function updateUserAddress(user_email: string, address: UserAddress) {
+export async function updateUserAddress(
+  user_email: string,
+  address: UserAddress,
+) {
   try {
     await axios.patch("/???", {
       data: {

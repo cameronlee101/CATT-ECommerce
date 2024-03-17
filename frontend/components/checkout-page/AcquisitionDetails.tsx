@@ -1,19 +1,47 @@
 import { AcquisitionMethod } from "@/api/checkout.types";
 import { ShoppingCartEntry } from "@/api/product.types";
 import { UserAddress } from "@/api/user.types";
-import { Button, Input, Radio, RadioGroup, Select, SelectItem } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import React, { useState } from "react";
 
-const provinces = ["BC", "AB", "SK", "MB", "QC", "ON", "NL", "NB", "NS", "PEI", "YT", "NT", "NU"];
+const provinces = [
+  "BC",
+  "AB",
+  "SK",
+  "MB",
+  "QC",
+  "ON",
+  "NL",
+  "NB",
+  "NS",
+  "PEI",
+  "YT",
+  "NT",
+  "NU",
+];
 
 type DeliveryDetailsProps = {
   data: undefined | ShoppingCartEntry[];
-  onInfoSubmit: (acquisitionMethod: AcquisitionMethod, deliveryDetails?: UserAddress) => void;
+  onInfoSubmit: (
+    acquisitionMethod: AcquisitionMethod,
+    deliveryDetails?: UserAddress,
+  ) => void;
   onInfoEdit: () => void;
 };
 
 // TODO: figure out a better way to manage the form and get the values when submitting
-export function DeliveryDetails({ data, onInfoSubmit, onInfoEdit }: DeliveryDetailsProps) {
+export function DeliveryDetails({
+  data,
+  onInfoSubmit,
+  onInfoEdit,
+}: DeliveryDetailsProps) {
   const [selectedOption, setSelectedOption] = useState("delivery");
   const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -24,7 +52,11 @@ export function DeliveryDetails({ data, onInfoSubmit, onInfoEdit }: DeliveryDeta
     province: "",
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+  const handleInputChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const { name, value } = event.target;
 
     setDeliveryFormData({ ...deliveryFormData, [name]: value });
@@ -56,8 +88,8 @@ export function DeliveryDetails({ data, onInfoSubmit, onInfoEdit }: DeliveryDeta
     return (
       <div>
         <p className="mb-3">
-          (Please enter your address so we can calculate shipping costs, your actual shipping address will be provided
-          through PayPal)
+          (Please enter your address so we can calculate shipping costs, your
+          actual shipping address will be provided through PayPal)
         </p>
         <p className="mb-1">Shipping Details:</p>
         <form onSubmit={handleSubmit} className="flex flex-col">
@@ -102,7 +134,11 @@ export function DeliveryDetails({ data, onInfoSubmit, onInfoEdit }: DeliveryDeta
               </SelectItem>
             ))}
           </Select>
-          <Button type="submit" color="primary" className="w-fit self-center mt-3">
+          <Button
+            type="submit"
+            color="primary"
+            className="w-fit self-center mt-3"
+          >
             Save
           </Button>
         </form>
@@ -178,9 +214,14 @@ export function DeliveryDetails({ data, onInfoSubmit, onInfoEdit }: DeliveryDeta
   // after the form is submitted, displays a confirmation of the info that the user entered/confirmed for either delivery or pickup
   return !formSubmitted ? (
     <div>
-      <h3 className="text-xl flex justify-center mb-2">Choose how to receive your purchase:</h3>
+      <h3 className="text-xl flex justify-center mb-2">
+        Choose how to receive your purchase:
+      </h3>
       <div className="flex justify-center mb-2">
-        <RadioGroup onValueChange={setSelectedOption} defaultValue={selectedOption}>
+        <RadioGroup
+          onValueChange={setSelectedOption}
+          defaultValue={selectedOption}
+        >
           <Radio value="delivery">Delivery</Radio>
           <Radio value="pickup">Pickup</Radio>
         </RadioGroup>

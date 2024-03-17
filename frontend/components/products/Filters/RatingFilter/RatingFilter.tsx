@@ -20,7 +20,10 @@ export const RatingFilter = ({ min, max, onChange }: RatingFilterProps) => {
   const range = useRef<HTMLDivElement | null>(null);
 
   // Convert to percentage
-  const getPercent = useCallback((value: number) => Math.round(((value - min) / (max - min)) * 100), [min, max]);
+  const getPercent = useCallback(
+    (value: number) => Math.round(((value - min) / (max - min)) * 100),
+    [min, max],
+  );
 
   // Set width of the range to decrease from the left side
   useEffect(() => {
@@ -50,7 +53,9 @@ export const RatingFilter = ({ min, max, onChange }: RatingFilterProps) => {
 
   return (
     <div className="mb-12">
-      <h3 className="flex text-center justify-center mb-4 select-none">Rating:</h3>
+      <h3 className="flex text-center justify-center mb-4 select-none">
+        Rating:
+      </h3>
       <div className={styles.container}>
         <input
           type="range"
@@ -81,7 +86,9 @@ export const RatingFilter = ({ min, max, onChange }: RatingFilterProps) => {
           <div className={styles.slider_track} />
           <div ref={range} className={styles.slider_range} />
           <div className={styles.slider_left_value}>{minVal}</div>
-          <div className={styles.slider_right_value}>{maxVal == max ? `${max}` : maxVal}</div>
+          <div className={styles.slider_right_value}>
+            {maxVal == max ? `${max}` : maxVal}
+          </div>
         </div>
       </div>
     </div>

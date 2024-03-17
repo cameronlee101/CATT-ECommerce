@@ -46,7 +46,10 @@ export async function getShoppingCartProducts(): Promise<ShoppingCartEntry[]> {
 }
 
 // adds a product to the current user's shopping cart
-export async function addToShoppingCart(product_id: number, quantity: number): Promise<void> {
+export async function addToShoppingCart(
+  product_id: number,
+  quantity: number,
+): Promise<void> {
   let newProduct = generateProduct(product_id);
   if (
     !shoppingCartEntries.find((item) => {
@@ -76,7 +79,9 @@ export async function addToShoppingCart(product_id: number, quantity: number): P
 }
 
 // removes a products from the current user's shopping cart
-export async function removeFromShoppingCart(product_id: number): Promise<void> {
+export async function removeFromShoppingCart(
+  product_id: number,
+): Promise<void> {
   shoppingCartEntries = shoppingCartEntries.filter((item) => {
     return item.product.product_id != product_id;
   });

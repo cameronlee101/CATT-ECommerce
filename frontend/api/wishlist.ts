@@ -46,7 +46,10 @@ export async function getWishlistProducts(): Promise<WishlistEntry[]> {
 }
 
 // adds a product to the current user's wishlist
-export async function addToWishlist(product_id: number, quantity: number): Promise<void> {
+export async function addToWishlist(
+  product_id: number,
+  quantity: number,
+): Promise<void> {
   let newProduct = generateProduct(product_id);
   if (
     !wishlistEntries.find((item) => {

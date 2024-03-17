@@ -24,8 +24,16 @@ export function Filters() {
     <Card className="w-80 h-fit">
       <CardBody className="flex flex-col align-middle text-center">
         <h2 className="text-xl font-semibold mb-4">Filters</h2>
-        <PriceFilter min={minFilteredPrice} max={maxFilteredPrice} onChange={setPriceRange} />
-        <RatingFilter min={minFilteredRating} max={maxFilteredRating} onChange={setReviewRange} />
+        <PriceFilter
+          min={minFilteredPrice}
+          max={maxFilteredPrice}
+          onChange={setPriceRange}
+        />
+        <RatingFilter
+          min={minFilteredRating}
+          max={maxFilteredRating}
+          onChange={setReviewRange}
+        />
         <Button>Save Filters</Button>
       </CardBody>
     </Card>

@@ -56,9 +56,16 @@ function page({ params }: { params: { product_id: number } }) {
               className="relative flex justify-center items-center border border-blue-500 w-full object-contain"
               style={{ flexGrow: 0.85 }}
             >
-              <Image src={data?.img_src || "/images/grey.jpg"} alt="Product Image" fill={true}></Image>
+              <Image
+                src={data?.img_src || "/images/grey.jpg"}
+                alt="Product Image"
+                fill={true}
+              ></Image>
             </div>
-            <div className="flex justify-center items-center border border-blue-500 w-full" style={{ flexGrow: 0.15 }}>
+            <div
+              className="flex justify-center items-center border border-blue-500 w-full"
+              style={{ flexGrow: 0.15 }}
+            >
               IMAGE SELECTOR
             </div>
           </div>
@@ -81,8 +88,12 @@ function page({ params }: { params: { product_id: number } }) {
             <p className="mb-40">SPECIFICATIONS</p>
           </div>
         </div>
-        <div className="flex justify-center items-center text-center border border-blue-500 h-32">REVIEWS</div>
-        <div className="flex justify-center items-center text-center border border-blue-500 h-96">WAREHOUSE MAP</div>
+        <div className="flex justify-center items-center text-center border border-blue-500 h-32">
+          REVIEWS
+        </div>
+        <div className="flex justify-center items-center text-center border border-blue-500 h-96">
+          WAREHOUSE MAP
+        </div>
         <div className="flex justify-center items-center text-center border border-blue-500 h-60">
           ALSO LIKE THIS PRODUCT
         </div>
