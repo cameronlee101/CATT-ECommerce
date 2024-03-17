@@ -42,7 +42,8 @@ export function UserControls() {
     }
   }
 
-  function getUserSpecificOptions(): JSX.Element {
+  // Displays different options for the user depending on their type
+  function getUserSpecificOptions(): React.JSX.Element {
     switch (userType) {
       case UserTypes.Customer:
         return (

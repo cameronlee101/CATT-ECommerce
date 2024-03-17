@@ -22,13 +22,14 @@ type ItemScrollMenuProps = {
   queryFunctionKey: QueryFunctionKeys;
 };
 
+// using string queryfunctionkeys instead of passing the actual function to this component to keep the possibility of the parent
+// component being a server component, cannot pass functions from server component to client component
 type QueryFunctionKeys = "getSaleProducts" | "getNewProducts";
 const queryFunctions: {
   [key: string]: () => Promise<Product[]>;
 } = {
   getSaleProducts: () => getSaleProducts(20),
   getNewProducts: () => getNewProducts(20),
-  // Add more functions as needed
 };
 
 export function ItemScrollMenu({

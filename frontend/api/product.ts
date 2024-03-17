@@ -118,12 +118,9 @@ export async function getFilteredProducts(
   return products;
 
   // backend call
+  // TODO: turn array of filters into a query string
   try {
-    let response = await axios.get<Product[]>("/???", {
-      data: {
-        filters: filters,
-      },
-    });
+    let response = await axios.get<Product[]>("/???", {});
 
     return response.data;
   } catch (error) {

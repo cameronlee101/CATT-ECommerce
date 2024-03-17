@@ -13,7 +13,7 @@ export function ItemsAndFilters({ categoryName }: ItemsAndFiltersProps) {
     <div className="flex flex-1 w-full mb-10 mt-8">
       <Filters />
       <ItemGrid
-        queryFunctionKey={"getCategoryProducts"}
+        queryFunctionKey={"getFilteredProducts"}
         filters={[categoryName]}
       />
     </div>

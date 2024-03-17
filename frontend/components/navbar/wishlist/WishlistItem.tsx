@@ -23,7 +23,6 @@ export function WishlistItem({ item, onItemRemove }: WishlistItemProps) {
     onItemRemove(item.product_id);
   }
 
-  // TODO: make a clear distinction between the two onclicks
   return (
     <div className="h-fit w-full">
       <Card className="h-auto w-full" isPressable onClick={handleItemClick}>

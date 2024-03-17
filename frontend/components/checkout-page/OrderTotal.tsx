@@ -16,6 +16,7 @@ export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
   const [totalPrice, setTotalPrice] = useState(-1);
   const [totalPriceVisible, setTotalPriceVisible] = useState(false);
 
+  // whenever props change, calculates the subtotal price, total price, and displays total price is all props are defined
   useEffect(() => {
     if (data) {
       let subtotal = 0;
@@ -44,7 +45,7 @@ export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
     }
   }, [data, acquisitionMethod]);
 
-  function getSubtotalPrice() {
+  function getSubtotalPrice(): React.JSX.Element {
     return (
       <div>
         {data?.map((item) => (
@@ -60,7 +61,7 @@ export function OrderTotal({ data, acquisitionMethod }: OrderTotalProps) {
     );
   }
 
-  function getTotalPrice() {
+  function getTotalPrice(): React.JSX.Element {
     return (
       <div className="mt-4">
         <p>

@@ -52,6 +52,7 @@ export function DeliveryDetails({
     province: "",
   });
 
+  // updates a specific attribute in the user's address whenever they type something
   const handleInputChange = (
     event:
       | React.ChangeEvent<HTMLInputElement>
@@ -62,6 +63,7 @@ export function DeliveryDetails({
     setDeliveryFormData({ ...deliveryFormData, [name]: value });
   };
 
+  // if option chosen was "pickup", then simply sets the forrm as submitted. if option chosen was "delivery", validates the info and then sets the form as submitted
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 

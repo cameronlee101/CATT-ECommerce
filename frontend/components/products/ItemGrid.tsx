@@ -13,12 +13,13 @@ type ItemGridProps = {
   filters: string[];
 };
 
-type QueryFunctionKeys = "getCategoryProducts";
+// using string queryfunctionkeys instead of passing the actual function to this component to keep the possibility of the parent
+// component being a server component, cannot pass functions from server component to client component
+type QueryFunctionKeys = "getFilteredProducts";
 const queryFunctions: {
   [key: string]: (filters: string[]) => Promise<Product[]>;
 } = {
-  getCategoryProducts: getFilteredProducts,
-  // Add more functions as needed
+  getFilteredProducts: getFilteredProducts,
 };
 
 export function ItemGrid({ queryFunctionKey, filters }: ItemGridProps) {

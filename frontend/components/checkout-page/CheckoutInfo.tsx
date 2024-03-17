@@ -19,11 +19,11 @@ export function CheckoutInfo() {
   const [userAddress, setUserAddress] = useState<UserAddress>();
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["shopping cart"],
+    queryKey: ["Shopping Cart"],
     queryFn: getShoppingCartProducts,
-    refetchOnMount: "always",
   });
 
+  // performs actions depending on whether the user chooses "delivery" or "pickup"
   function onInfoSubmit(
     acquisitionMethod: AcquisitionMethod,
     deliveryDetails?: UserAddress,
@@ -37,6 +37,7 @@ export function CheckoutInfo() {
     }
   }
 
+  // triggers when the user goes to edit their delivery or pickup information, causes the paypal payment to no longer be visible
   function onInfoEdit() {
     setAcquisitionMethod(undefined);
   }
