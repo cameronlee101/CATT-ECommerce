@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ItemGrid } from "./ItemGrid";
 import { FiltersType } from "@/api/filters.types";
 import { Filters } from "./Filters";
@@ -18,6 +18,10 @@ export function ItemsAndFilters({
     tags: categoryName ? [categoryName] : undefined,
     product_name: productName,
   });
+
+  useEffect(() => {
+    updateFilters({});
+  }, [categoryName, productName]);
 
   function updateFilters(newFilters: FiltersType) {
     if (newFilters.tags) {
