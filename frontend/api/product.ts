@@ -121,7 +121,7 @@ export async function createProductListing(formData: ProductListingCreation) {
     // });
 
     try {
-      await axios.post(
+      axios.post(
         `/createProductListing`,
         {
           ...rest,
