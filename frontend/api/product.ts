@@ -11,8 +11,6 @@ export async function getProduct(
   try {
     let response = await axios.get<ProductFull>(`/getProduct/${product_id}`);
 
-    console.log(response.data);
-
     return response.data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -31,8 +29,6 @@ export async function getNewProducts(limit: number): Promise<Product[]> {
     let response = await axios.get<Product[]>(
       `/getNewestProductsByLimit/${limit}`,
     );
-
-    console.log(response.data);
 
     return response.data;
   } catch (error) {
