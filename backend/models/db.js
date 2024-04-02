@@ -198,6 +198,12 @@ const helpers = {
     try {
       await pool.query(`BEGIN`);
       //Tag Table
+      await pool.query(`INSERT INTO tag (tag_name) VALUES ('Electronics');`);
+      await pool.query(`INSERT INTO tag (tag_name) VALUES ('Fashion');`);
+      await pool.query(`INSERT INTO tag (tag_name) VALUES ('Kitchen');`);
+      await pool.query(`INSERT INTO tag (tag_name) VALUES ('Home');`);
+      await pool.query(`INSERT INTO tag (tag_name) VALUES ('Garden');`);
+      await pool.query(`INSERT INTO tag (tag_name) VALUES ('Toys');`);
       await pool.query(`INSERT INTO tag (tag_name) VALUES ('New Arrival');`);
       await pool.query(`INSERT INTO tag (tag_name) VALUES ('Best Seller');`);
       await pool.query(`INSERT INTO tag (tag_name) VALUES ('Eco-Friendly');`);
@@ -561,6 +567,16 @@ const helpers = {
       }
     } catch (error) {
       console.error("Error retrieving newest products:", error);
+    }
+  },
+
+  getAllProductTags: async function () {
+    try {
+      const result = await pool.query("SELECT tag_name FROM tag;");
+      return result.rows.map((row) => row.tag_name);
+    } catch (error) {
+      console.error("Error fetching product tags:", error);
+      throw error;
     }
   },
 

@@ -29,7 +29,11 @@ export default function TagsInput({ handleInputChange }: TagsInputProps) {
           handleInputChange(value as string[]);
         }}
       >
-        {data?.map((tag) => <CustomCheckbox value={tag}>{tag}</CustomCheckbox>)}
+        {data?.map((tag) => (
+          <span key={tag}>
+            <CustomCheckbox value={tag}>{tag}</CustomCheckbox>
+          </span>
+        ))}
       </CheckboxGroup>
     </div>
   );

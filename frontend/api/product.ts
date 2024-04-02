@@ -164,13 +164,7 @@ export async function createProductListing(formData: ProductListingCreation) {
 
 export async function getProductTags() {
   try {
-    const thing = [];
-    for (let category of Object.values(Categories)) {
-      thing.push(category);
-    }
-    return thing;
-
-    let response = await axios.get<string[]>("???"); //FIXME: backend url
+    let response = await axios.get<string[]>("getAllProductTags");
 
     return response.data;
   } catch (error) {

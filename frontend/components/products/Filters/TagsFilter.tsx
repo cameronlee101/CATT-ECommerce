@@ -1,5 +1,6 @@
 "use client";
 
+import { Categories } from "@/api/filters.types";
 import { getProductTags } from "@/api/product";
 import { CustomCheckbox } from "@/components/general";
 import { CheckboxGroup } from "@nextui-org/react";
@@ -29,7 +30,13 @@ export function TagsFilter({ selectedTags, onChange }: TagsFilterProps) {
           onChange(value as string[]);
         }}
       >
-        {data?.map((tag) => <CustomCheckbox value={tag}>{tag}</CustomCheckbox>)}
+        {data
+          ?.filter((tag) => !Object.keys(Categories).includes(tag))
+          ?.map((tag) => (
+            <span key={tag}>
+              <CustomCheckbox value={tag}>{tag}</CustomCheckbox>
+            </span>
+          ))}
       </CheckboxGroup>
     </div>
   );
