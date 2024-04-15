@@ -143,7 +143,19 @@ function page({ searchParams }: { searchParams: SearchParams }) {
           </div>
           <div className="flex flex-col justify-center items-center text-center md:w-3/5">
             <p className="font-bold text-xl">{data?.product_name}</p>
-            <p className="text-lg">${data?.base_price.toFixed(2)}</p>
+            {data && data?.base_price > data?.current_price ? (
+              <p>
+                <span className="line-through">
+                  ${data.base_price.toFixed(2)}
+                </span>
+                &nbsp;
+                <span className="text-red-500">
+                  ${data.current_price.toFixed(2)}
+                </span>
+              </p>
+            ) : (
+              <p className="text-lg">${data?.base_price.toFixed(2)}</p>
+            )}
             <div className="flex gap-4">
               <RadioGroup
                 defaultValue="true"
