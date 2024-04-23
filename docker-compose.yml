@@ -1,0 +1,40 @@
+version: '2.1'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+     postgres:
+        condition: service_healthy
+    environment:
+      PGHOST: postgres
+      PGUSER: postgres
+      PGPASSWORD: root
+      PGDATABASE: postgres
+      PGPORT: 5432
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - database:/data/db
+
+volumes:
+  database:

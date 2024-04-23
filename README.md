@@ -7,18 +7,15 @@ Note: web application will only function when the backend compute engine is onli
 
 ## How to Run Locally
 
-- Install Node.js at https://nodejs.org/en
+- Ensure docker is installed on your system https://docs.docker.com/engine/install/
 - Create a PayPal Developer account and create a new REST API app at https://developer.paypal.com/home
 - Create a Google OAuth2.0 Client ID, instructions at https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow
   - In the Authorized JavaScript origins section, add `http://localhost:3000` as one of the URIs
-- Ensure PostgreSQL is installed at https://www.postgresql.org/download/
-  - The user `postgres` should have the password `root`, and the database should run on port `5432`
 
-### Running the frontend
+### Frontend environment variables
 
-1. cd into `./frontend`
-2. run `npm install`
-3. create a new environment variable file called `.local.env`, which should contain the following variables:
+1. From the root of the project, cd into `./frontend`
+2. Create a new environment variable file called `.local.env`, which should contain the following variables:
 
 ```
 GOOGLE_CLIENT_ID='your Google client ID'
@@ -29,13 +26,10 @@ BACKEND_SERVER_BASE_URL='http://localhost:8080'
 
 Replace the values of the environment variables with your relevant keys.
 
-4. run `npm run dev` to start the development server for the application
+### Backend environment variables
 
-### Running the backend
-
-1. cd into `./backend`
-2. run `npm install`
-3. create a new environment variable file called `.env`, which should contain the following variables:
+1. From the root of the project, cd into `./backend`
+2. Create a new environment variable file called `.env`, which should contain the following variables:
 
 ```
 PAYPAL_CLIENT_ID='your PayPal developer client ID'
@@ -44,10 +38,9 @@ PAYPAL_CLIENT_SECRET='your PayPal developer secret'
 
 Replace the values of the environment variables with your relevant keys.
 
-4. run `npm run start` to run the backend server
-
-### Accessing the application
-
-Now that both the frontend and backend are running, the application should be accessible in your browser at `http://localhost:3000`
+### Running the application
+- From the root of the project, run `docker-compose up`
+- Wait for all of the docker containers to start up
+- Now that both the frontend, backend, and database are running, the application should be accessible in your browser at `http://localhost:3000`
 
 <!-- TODO: note about inserting test data, vendor + admin accounts -->

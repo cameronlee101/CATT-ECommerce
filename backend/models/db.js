@@ -5,10 +5,11 @@ const { Pool } = require("pg");
 var pool;
 
 pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  password: "root",
-  port: "5432",
+  user: process.env.PGUSER || "postgres",
+  host: process.env.PGHOST || "localhost",
+  password: process.env.PGPASSWORD || "root",
+  port: process.env.PGPORT || "5432",
+  database: process.env.PGDATABASE || "postgres",
 });
 
 const helpers = {
