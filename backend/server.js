@@ -805,20 +805,6 @@ app.get("/getAllWarehouseInfo", async (req, res) => {
     res.status(500).json({ error: "Failed to All get warehouse info." });
   }
 });
-//Method:GET
-//Retrieves all product tags available in the system.
-//Returns:
-//An array of all product tags if successful.
-//Error message if the operation fails.
-app.get("/getAllProductTags", async (req, res) => {
-  try {
-    const tags = await helpers.getAllProductTags();
-    res.status(200).json(tags);
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send({ error: "Failed to fetch product tags" });
-  }
-});
 //Deletes a product listing identified by its product ID.
 //Parameters:product_id (body parameter)
 //Returns:
