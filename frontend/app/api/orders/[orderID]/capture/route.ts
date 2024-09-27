@@ -1,9 +1,10 @@
+import { NextRequest, NextResponse } from "next/server";
 const { helpers } = require("../../../db");
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
 
 export async function POST(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { orderID: string } },
 ) {
   try {
@@ -18,10 +19,10 @@ export async function POST(
       await helpers.clearUserCart(user_email);
     }
 
-    return Response.json(jsonResponse, { status: httpStatusCode });
+    return NextResponse.json(jsonResponse, { status: httpStatusCode });
   } catch (error) {
     console.error("Failed to capture order:", error);
-    return Response.json(
+    return NextResponse.json(
       { error: "Failed to capture order." },
       { status: 500 },
     );

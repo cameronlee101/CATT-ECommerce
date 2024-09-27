@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 const { helpers } = require("../../db");
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { warehouse_id: string } },
 ) {
   try {

@@ -4,7 +4,6 @@ const { helpers } = require("../db");
 export async function POST(req: NextRequest) {
   try {
     const formData: FormData = await req.formData();
-    console.log(formData);
 
     const product_name: string | null =
       formData.get("product_name")?.toString() || null;
@@ -16,10 +15,11 @@ export async function POST(req: NextRequest) {
       formData.get("current_price")?.toString() || null;
     const user_email: string | null =
       formData.get("user_email")?.toString() || null;
-    const product_images: string[] = [];
-    formData
-      .getAll("product_images[]")
-      .forEach((val) => product_images.push(val.toString()));
+    const product_images: ArrayBuffer[] = [];
+    for (const val of formData.getAll("product_images[]")) {
+      const arrayBuffer = await (val as File).arrayBuffer();
+      product_images.push(Buffer.from(arrayBuffer));
+    }
     const warehouse_ids: string[] = [];
     formData
       .getAll("warehouse_ids[]")
@@ -32,11 +32,6 @@ export async function POST(req: NextRequest) {
     formData
       .getAll("product_tags[]")
       .forEach((val) => product_tags.push(val.toString()));
-
-    product_images.pop();
-    warehouse_ids.pop();
-    quantities.pop();
-    product_tags.pop();
 
     await helpers.createProductListing(
       product_name,

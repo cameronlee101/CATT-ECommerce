@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
 const { helpers } = require("../db");
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
@@ -18,9 +19,10 @@ export async function POST(req: Request) {
 
     // Validate user_email
     if (!user_email) {
-      return new Response(JSON.stringify({ error: "Invalid user email!" }), {
-        status: 400,
-      });
+      return NextResponse.json(
+        { error: "Invalid user email!" },
+        { status: 400 },
+      );
     }
     user_email = user_email.trim();
 
@@ -37,16 +39,12 @@ export async function POST(req: Request) {
 
     // Validate user_type
     if (!user_type) {
-      return new Response(JSON.stringify({ error: "Invalid type!" }), {
-        status: 400,
-      });
+      return NextResponse.json({ error: "Invalid type!" }, { status: 400 });
     }
     user_type = user_type.trim().toLowerCase();
 
     if (user_type !== "customer" && user_type !== "vendor") {
-      return new Response(JSON.stringify({ error: "Invalid type2!" }), {
-        status: 400,
-      });
+      return NextResponse.json({ error: "Invalid type!" }, { status: 400 });
     }
 
     const type_id = user_type === "vendor" ? 1 : 2;
@@ -63,14 +61,14 @@ export async function POST(req: Request) {
       addressGiven,
     );
 
-    return new Response(
-      JSON.stringify({ success: "User added successfully!" }),
+    return NextResponse.json(
+      { success: "User added successfully!" },
       { status: 201 },
     );
   } catch (error) {
     console.error("Error:", error);
-    return new Response(
-      JSON.stringify({ error: "Server failed to add user!" }),
+    return NextResponse.json(
+      { error: "Server failed to add user!" },
       { status: 500 },
     );
   }

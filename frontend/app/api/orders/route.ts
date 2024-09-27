@@ -1,18 +1,22 @@
+import { NextRequest, NextResponse } from "next/server";
 const { helpers } = require("../../db");
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { user_email, acquisitionMethod } = body;
 
     const { jsonResponse, httpStatusCode } = await createOrder(user_email);
 
-    return Response.json(jsonResponse, { status: httpStatusCode });
+    return NextResponse.json(jsonResponse, { status: httpStatusCode });
   } catch (error) {
     console.error("Failed to create order:", error);
-    return Response.json({ error: "Failed to create order." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to create order." },
+      { status: 500 },
+    );
   }
 }
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../db");
+const { helpers } = require("../db");
 
 export async function GET(req: NextRequest) {
   try {

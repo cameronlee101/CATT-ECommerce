@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
 const { helpers } = require("../db");
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
   const product_name = searchParams.get("product_name")?.trim() || "";
@@ -101,10 +102,10 @@ export async function GET(req: Request) {
       }
     }
 
-    return Response.json(reply, { status: 200 });
+    return NextResponse.json(reply, { status: 200 });
   } catch (error) {
     console.error(error);
-    return Response.json(
+    return NextResponse.json(
       { error: "Server failed to get products!" },
       { status: 500 },
     );
