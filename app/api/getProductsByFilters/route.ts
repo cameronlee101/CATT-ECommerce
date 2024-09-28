@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -37,13 +37,13 @@ export async function GET(req: NextRequest) {
 
   try {
     // Get products by name
-    let response = await helpers.getProductIdByName(product_name);
+    let response = await db.getProductIdByName(product_name);
     response.forEach((row: { product_id: number }) => {
       responseIds.push(row.product_id);
     });
 
     // Get products by rating
-    response = await helpers.getProductIdByRating(
+    response = await db.getProductIdByRating(
       product_avg_rating_min,
       product_avg_rating_max,
     );
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
     responseIds = responseIds.filter((id) => tempRows.includes(id));
 
     // Get products by price
-    response = await helpers.getProductIdByPrice(
+    response = await db.getProductIdByPrice(
       current_price_min,
       current_price_max,
     );
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
     responseIds = responseIds.filter((id) => tempRows.includes(id));
 
     // Get products by date added
-    response = await helpers.getProductIdByDateAdded(
+    response = await db.getProductIdByDateAdded(
       product_date_added_after,
       product_date_added_before,
     );
@@ -69,13 +69,13 @@ export async function GET(req: NextRequest) {
     responseIds = responseIds.filter((id) => tempRows.includes(id));
 
     // Get products by user email
-    response = await helpers.getProductIdByUserEmail(user_email);
+    response = await db.getProductIdByUserEmail(user_email);
     tempRows = response.map((row: { product_id: number }) => row.product_id);
     responseIds = responseIds.filter((id) => tempRows.includes(id));
 
     // Get products by tags
     if (tags.length > 0) {
-      response = await helpers.getProductIdByTags(tags);
+      response = await db.getProductIdByTags(tags);
       tempRows = response.map((row: { product_id: number }) => row.product_id);
       responseIds = responseIds.filter((id) => tempRows.includes(id));
     }
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
     // Fetch product info for filtered product IDs
     let reply: any[] = [];
     for (const id of responseIds) {
-      const product = await helpers.getProductInfoByPid(id);
+      const product = await db.getProductInfoByPid(id);
       if (product.active === true) {
         reply.push({
           product_id: product.product_id,

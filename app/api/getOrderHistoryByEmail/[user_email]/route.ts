@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../db");
+const db = require("@/app/api/db");
 
 export async function GET(
   req: NextRequest,
@@ -9,7 +9,7 @@ export async function GET(
     const { user_email } = params;
 
     // Get the order history based on the email
-    const history = await helpers.getOrderHistoryByEmail(user_email);
+    const history = await db.getOrderHistoryByEmail(user_email);
 
     return NextResponse.json(history, { status: 200 });
   } catch (error) {

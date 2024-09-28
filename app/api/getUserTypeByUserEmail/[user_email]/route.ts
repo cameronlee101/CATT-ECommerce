@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../db");
+const db = require("@/app/api/db");
 
 export async function GET(
   req: NextRequest,
@@ -12,7 +12,7 @@ export async function GET(
   const user_email = params.user_email.trim();
 
   try {
-    const users = await helpers.getUserTypeByUserEmail(user_email);
+    const users = await db.getUserTypeByUserEmail(user_email);
 
     if (users.length > 0) {
       return NextResponse.json({ type: users[0].type }, { status: 200 });

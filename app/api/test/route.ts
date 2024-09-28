@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function POST(req: NextRequest) {
   try {
-    await helpers.init();
-    await helpers.insertTestData();
+    await db.init();
+    await db.insertTestData();
     console.log("Success: Data inserted succesfully!");
     return NextResponse.json(
       { msg: "Success: Data inserted succesfully!" },
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    await helpers.deleteAllTables();
+    await db.deleteAllTables();
     console.log("Success: Tables deleted succesfully!");
     return NextResponse.json(
       { msg: "Success: Tables deleted succesfully!" },

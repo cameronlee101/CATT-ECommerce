@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     product_id = parseInt(product_id);
     quantity = parseInt(quantity);
 
-    await helpers.postProductToUserWishlist(user_email, product_id, quantity);
+    await db.postProductToUserWishlist(user_email, product_id, quantity);
 
     return NextResponse.json(
       { success: "Item added to user wishlist successfully!" },

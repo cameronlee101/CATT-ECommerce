@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
+const handleResponse = require("./handleResponse");
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
 
@@ -52,7 +53,7 @@ const generateAccessToken = async () => {
  * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
  */
 const createOrder = async (user_email: string) => {
-  const total = await helpers.getOrderTotal(user_email);
+  const total = await db.getOrderTotal(user_email);
   const accessToken = await generateAccessToken();
   const url = `${paypal_base}/v2/checkout/orders`;
   const payload = {
@@ -81,5 +82,5 @@ const createOrder = async (user_email: string) => {
     body: JSON.stringify(payload),
   });
 
-  return helpers.handleResponse(response);
+  return handleResponse(response);
 };

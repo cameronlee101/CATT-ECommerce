@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function DELETE(req: NextRequest) {
   try {
     const { product_id } = await req.json();
 
-    await helpers.deleteProductListingByProductId(product_id);
+    await db.deleteProductListingByProductId(product_id);
 
     return NextResponse.json({}, { status: 200 });
   } catch (error) {

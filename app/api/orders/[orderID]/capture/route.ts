@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../../db");
+const db = require("@/app/api/db");
+const handleResponse = require("../../handleResponse");
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
 
@@ -15,8 +16,8 @@ export async function POST(
     const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
 
     if (httpStatusCode === 201) {
-      await helpers.addCartItemsToOrderInfoTable(orderID, user_email);
-      await helpers.clearUserCart(user_email);
+      await db.addCartItemsToOrderInfoTable(orderID, user_email);
+      await db.clearUserCart(user_email);
     }
 
     return NextResponse.json(jsonResponse, { status: httpStatusCode });
@@ -77,5 +78,5 @@ const captureOrder = async (orderID: string) => {
     },
   });
 
-  return helpers.handleResponse(response);
+  return handleResponse(response);
 };

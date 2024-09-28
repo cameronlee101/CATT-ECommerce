@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../db");
+const db = require("@/app/api/db");
 
 export async function GET(
   req: NextRequest,
@@ -20,7 +20,7 @@ export async function GET(
       );
     }
 
-    const response = await helpers.getProductInfoByPid(product_id);
+    const response = await db.getProductInfoByPid(product_id);
 
     if (response.length === 0) {
       return NextResponse.json(

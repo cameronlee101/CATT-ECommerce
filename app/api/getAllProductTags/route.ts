@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function GET() {
   try {
-    const tags = await helpers.getAllProductTags();
+    const tags = await db.getAllProductTags();
     return NextResponse.json(tags, { status: 200 });
   } catch (error) {
     console.error("Error:", error);

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function GET(req: NextRequest) {
   try {
     // Fetch all vendor requests using the helper function
-    const response = await helpers.getAllVendorRequests();
+    const response = await db.getAllVendorRequests();
 
     return NextResponse.json(response, { status: 200 });
   } catch (error) {

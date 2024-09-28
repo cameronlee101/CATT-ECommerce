@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../db");
+const db = require("@/app/api/db");
 
 export async function GET(
   req: NextRequest,
@@ -8,7 +8,7 @@ export async function GET(
   const limit = params.limit ? parseInt(params.limit) : -1; // -1 is unlimited
 
   try {
-    const products = await helpers.getProductsOnSaleByLimit(limit);
+    const products = await db.getProductsOnSaleByLimit(limit);
 
     if (products.length > 0) {
       return NextResponse.json(products, { status: 200 });

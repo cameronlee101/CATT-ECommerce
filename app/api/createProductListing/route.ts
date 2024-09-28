@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       .getAll("product_tags[]")
       .forEach((val) => product_tags.push(val.toString()));
 
-    await helpers.createProductListing(
+    await db.createProductListing(
       product_name,
       product_description,
       base_price,

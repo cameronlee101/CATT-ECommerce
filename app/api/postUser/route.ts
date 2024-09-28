@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function POST(req: NextRequest) {
   try {
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     const type_id = user_type === "vendor" ? 1 : 2;
 
     // Post user data to the database
-    await helpers.postUser(
+    await db.postUser(
       street_name,
       city,
       province,

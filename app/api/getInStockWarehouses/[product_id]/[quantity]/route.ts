@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../../../db");
+const db = require("@/app/api/db");
 
 export async function GET(
   req: NextRequest,
@@ -9,7 +9,7 @@ export async function GET(
     const { product_id, quantity } = params;
 
     // Fetch the warehouses with the product in stock
-    const response = await helpers.getInStockWarehouses(product_id, quantity);
+    const response = await db.getInStockWarehouses(product_id, quantity);
 
     return NextResponse.json(response, { status: 200 });
   } catch (error) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Call the helper function to post the vendor request by user email
-    await helpers.postVendorRequestsByUserEmail(user_email);
+    await db.postVendorRequestsByUserEmail(user_email);
     console.log("Vendor Request Posted Successfully!");
 
     return NextResponse.json(

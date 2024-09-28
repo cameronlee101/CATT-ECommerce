@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const { helpers } = require("../db");
+const db = require("@/app/api/db");
 
 export async function PATCH(req: NextRequest) {
   try {
@@ -27,7 +27,7 @@ export async function PATCH(req: NextRequest) {
     }
     quantity = parseInt(quantity);
 
-    const response = await helpers.patchWarehouseStock(
+    const response = await db.patchWarehouseStock(
       warehouse_id,
       product_id,
       quantity,
