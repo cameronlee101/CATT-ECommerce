@@ -39,6 +39,7 @@ PAYPAL_CLIENT_SECRET='your PayPal developer secret'
 Replace the values of the environment variables with your relevant keys.
 
 ### Running the application
+
 - From the root of the project, run `docker-compose up`
 - Wait for all of the docker containers to start up
 - Now that both the frontend, backend, and database are running, the application should be accessible in your browser at `http://localhost:3000`
