@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 const handleResponse = require("./handleResponse");
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
@@ -53,7 +53,7 @@ const generateAccessToken = async () => {
  * @see https://developer.paypal.com/docs/api/orders/v2/#orders_create
  */
 const createOrder = async (user_email: string) => {
-  const total = await db.getOrderTotal(user_email);
+  const total = await getOrderTotal(user_email);
   const accessToken = await generateAccessToken();
   const url = `${paypal_base}/v2/checkout/orders`;
   const payload = {
@@ -62,7 +62,7 @@ const createOrder = async (user_email: string) => {
       {
         amount: {
           currency_code: "CAD",
-          value: total.toFixed(2).toString(),
+          value: (total || -1).toFixed(2).toString(),
         },
       },
     ],
@@ -84,3 +84,38 @@ const createOrder = async (user_email: string) => {
 
   return handleResponse(response);
 };
+
+//Calculates the total cost of all items in a user's cart, including delivery fees (if applicable) and taxes.
+//Parameters:user_email (String)
+//Returns: The total cost of the user's cart . This total includes product costs, delivery fees and taxes.
+async function getOrderTotal(user_email: any) {
+  try {
+    const response = await pool.query(
+      `SELECT * 
+      FROM usercart
+      WHERE user_email = $1;`,
+      [user_email],
+    );
+    let total = 0;
+    for (let i = 0; i < response.rows.length; i++) {
+      let { product_id, quantity, delivery } = response.rows[i];
+      let price_response = await pool.query(
+        `SELECT current_price
+        FROM productprice
+        WHERE product_id = $1`,
+        [product_id],
+      );
+      let current_price = price_response.rows[0].current_price;
+      if (delivery === 1) {
+        delivery = 1.1; // 10% delivery
+      } else {
+        delivery = 1;
+      }
+      let subTotal = current_price * quantity * delivery * 1.11; //1.11 for taxes
+      total += subTotal;
+    }
+    return total;
+  } catch (error) {
+    console.error("Error getting all warehouse info:", error);
+  }
+}

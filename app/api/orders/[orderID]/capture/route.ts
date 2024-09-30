@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 const handleResponse = require("../../handleResponse");
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
@@ -16,8 +16,8 @@ export async function POST(
     const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
 
     if (httpStatusCode === 201) {
-      await db.addCartItemsToOrderInfoTable(orderID, user_email);
-      await db.clearUserCart(user_email);
+      await addCartItemsToOrderInfoTable(orderID, user_email);
+      await clearUserCart(user_email);
     }
 
     return NextResponse.json(jsonResponse, { status: httpStatusCode });
@@ -80,3 +80,90 @@ const captureOrder = async (orderID: string) => {
 
   return handleResponse(response);
 };
+
+async function addCartItemsToOrderInfoTable(order_id: any, user_email: any) {
+  try {
+    const response = await pool.query(
+      `SELECT * FROM usercart WHERE user_email = $1;`,
+      [user_email],
+    );
+    const currentTime = Math.floor(new Date().getTime() / 1000);
+    let lastObj = response.rows[response.rows.length - 1];
+    let productIdandQuantity = [];
+    let qString = `INSERT INTO orderinfo (order_id, user_email, product_id, quantity, delivery, warehouse_id, order_date) VALUES ('${order_id}', '${user_email}', ${lastObj.product_id}, ${lastObj.quantity}, ${lastObj.delivery}, ${lastObj.warehouse_id}, ${currentTime})`;
+    productIdandQuantity.push({
+      product_id: lastObj.product_id,
+      quantity: lastObj.quantity,
+      warehouse_id: lastObj.warehouse_id,
+      delivery: lastObj.delivery,
+    });
+    response.rows.pop();
+    while (response.rows.length > 0) {
+      lastObj = response.rows[response.rows.length - 1];
+      qString += `, ('${order_id}','${user_email}',${lastObj.product_id}, ${lastObj.quantity}, ${lastObj.delivery}, ${lastObj.warehouse_id}, ${currentTime})`;
+      productIdandQuantity.push({
+        product_id: lastObj.product_id,
+        quantity: lastObj.quantity,
+        warehouse_id: lastObj.warehouse_id,
+        delivery: lastObj.delivery,
+      });
+      response.rows.pop();
+    }
+    qString += `;`;
+    await pool.query(qString);
+    for (let i = 0; i < productIdandQuantity.length; i++) {
+      let { product_id, quantity, warehouse_id, delivery } =
+        productIdandQuantity[i];
+      if (delivery == 0) {
+        patchWarehouseStock(warehouse_id, product_id, quantity);
+      }
+    }
+  } catch (error) {
+    console.error("Error adding items to order info table:", error);
+  }
+}
+
+// TODO: consolidate with patchWarehouseStock endpoint
+//Updates the stock quantity of a specific product in a warehouse.
+//Parameters:warehouse_id (Integer),product_id (Integer),quantity (Integer)
+//Returns:
+//1 if the operation is successful.
+//-1 if the current quantity is less than the requested quantity.
+//0 if the product is not found in the warehouse.
+async function patchWarehouseStock(
+  warehouse_id: any,
+  product_id: any,
+  quantity: number,
+) {
+  try {
+    let response = await pool.query(
+      `SELECT quantity FROM warehousestock WHERE warehouse_id = $1 AND product_id = $2;`,
+      [warehouse_id, product_id],
+    );
+    if (response.rows[0].quantity >= quantity) {
+      await pool.query(
+        `UPDATE warehousestock SET quantity = quantity - $3 WHERE warehouse_id = $1 AND product_id = $2;`,
+        [warehouse_id, product_id, quantity],
+      );
+      return 1;
+    }
+    return 0;
+  } catch (error) {
+    console.error("Error adjusting warehouse stock:", error);
+  }
+}
+
+//Clears all items from a user's cart.
+//Parameters:user_email (String)
+//Returns:None
+async function clearUserCart(user_email: any) {
+  try {
+    await pool.query(
+      `DELETE FROM usercart
+        WHERE user_email = $1;`,
+      [user_email],
+    );
+  } catch (error) {
+    console.error("Error clearing user cart:", error);
+  }
+}

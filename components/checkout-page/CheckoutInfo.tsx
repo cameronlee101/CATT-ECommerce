@@ -7,8 +7,8 @@ import { DeliveryDetails } from "./DeliveryDetails";
 import { useQuery } from "@tanstack/react-query";
 import { UserAddress } from "@/axios/user.types";
 import { updateUserAddress } from "@/axios/user";
-import { getSessionUserEmail } from "@/app/auth";
 import { useState } from "react";
+import { validateRequest } from "@/lib/auth_utils";
 
 // Displays 3 "sections"
 // 1) all the items in the users cart which will be purchased
@@ -24,9 +24,9 @@ export function CheckoutInfo() {
 
   // when the user submits their delivery info, updates their address and allows them to pay for their order
   async function onInfoSubmit(deliveryDetails?: UserAddress) {
-    const user_email = await getSessionUserEmail();
-    if (user_email && deliveryDetails) {
-      await updateUserAddress(user_email, deliveryDetails);
+    const { user } = await validateRequest();
+    if (user && deliveryDetails) {
+      await updateUserAddress(user.user_email, deliveryDetails);
       setDeliveryFromSubmitted(true);
     }
   }

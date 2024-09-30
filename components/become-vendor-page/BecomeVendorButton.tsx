@@ -1,7 +1,7 @@
 "use client";
 
+import { validateRequest } from "@/lib/auth_utils";
 import { applyToBecomeVendor } from "@/axios/user";
-import { getSessionUserEmail } from "@/app/auth";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -15,10 +15,10 @@ export function BecomeVendorButton() {
 
   // Applies the current user to become av endor
   async function apply() {
-    const user_email = await getSessionUserEmail();
+    const { user } = await validateRequest();
 
-    if (user_email) {
-      await applyToBecomeVendor(user_email);
+    if (user) {
+      await applyToBecomeVendor(user.user_email);
       setPressState("success");
     } else {
       router.push("/signin");

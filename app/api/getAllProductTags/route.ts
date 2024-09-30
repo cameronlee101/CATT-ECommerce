@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function GET() {
   try {
-    const tags = await db.getAllProductTags();
+    const tags = await getAllProductTags();
     return NextResponse.json(tags, { status: 200 });
   } catch (error) {
     console.error("Error:", error);
@@ -11,5 +11,17 @@ export async function GET() {
       { error: "Failed to fetch product tags" },
       { status: 500 },
     );
+  }
+}
+
+//Fetches all unique product tags from the database.
+//Parameters: none
+//Returns: An array of all product tags as strings.
+async function getAllProductTags() {
+  try {
+    const result = await pool.query("SELECT tag_name FROM tag;");
+    return result.rows.map((row) => row.tag_name);
+  } catch (error) {
+    console.error("Error fetching product tags:", error);
   }
 }

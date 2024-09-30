@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Call the helper function to post the vendor request by user email
-    await db.postVendorRequestsByUserEmail(user_email);
+    await postVendorRequestsByUserEmail(user_email);
     console.log("Vendor Request Posted Successfully!");
 
     return NextResponse.json(
@@ -27,5 +27,28 @@ export async function POST(req: NextRequest) {
       { error: "Failed to post vendor request." },
       { status: 500 },
     );
+  }
+}
+
+//Submits a request to become a vendor for a specific user.
+//Parameters:user_email (String)
+//Returns: None
+async function postVendorRequestsByUserEmail(user_email: any) {
+  try {
+    const response = await pool.query(
+      `SELECT *
+        FROM vendorrequest
+        WHERE user_email = $1;`,
+      [user_email],
+    );
+    if (response.rows.length === 0) {
+      await pool.query(
+        `INSERT INTO vendorrequest(user_email)
+          VALUES ($1);`,
+        [user_email],
+      );
+    }
+  } catch (error) {
+    console.error("Error creating vendor request:", error);
   }
 }

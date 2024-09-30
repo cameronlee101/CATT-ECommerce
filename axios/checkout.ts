@@ -1,16 +1,16 @@
 import { OnApproveData } from "@paypal/paypal-js";
 import { axios } from "./axios";
-import { getSessionUserEmail } from "@/app/auth";
+import { validateRequest } from "@/lib/auth_utils";
 import { isAxiosError } from "axios";
 
 // Calls backend api to create a new PayPal order
 export async function createOrder() {
-  const user_email = await getSessionUserEmail();
+  const { user } = await validateRequest();
 
-  if (user_email) {
+  if (user) {
     try {
       const response = await axios.post(`/api/orders`, {
-        user_email: user_email,
+        user_email: user.user_email,
       });
 
       return response.data;
@@ -33,12 +33,12 @@ export async function createOrder() {
 
 // Gets information after a paypal payment is approved/denied
 export async function onTransactionApprove(data: OnApproveData) {
-  const user_email = await getSessionUserEmail();
+  const { user } = await validateRequest();
 
-  if (user_email) {
+  if (user) {
     try {
       const response = await axios.post(`/api/orders/${data.orderID}/capture`, {
-        user_email: user_email,
+        user_email: user.user_email,
       });
 
       return response.data;

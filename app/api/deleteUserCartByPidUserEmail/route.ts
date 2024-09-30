@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function DELETE(req: NextRequest) {
   try {
@@ -16,7 +16,7 @@ export async function DELETE(req: NextRequest) {
 
     product_id = parseInt(product_id);
 
-    await db.deleteUserCartByPidUserEmail(user_email, product_id);
+    await deleteUserCartByPidUserEmail(user_email, product_id);
 
     return NextResponse.json(
       { msg: "Item removed from user cart successfully!" },
@@ -28,5 +28,19 @@ export async function DELETE(req: NextRequest) {
       { error: "Server failed to delete product from user cart!" },
       { status: 500 },
     );
+  }
+}
+
+//Deletes a specific product from a user's cart.
+//Parameters:user_email (String), product_id (Integer)
+//Returns: none
+async function deleteUserCartByPidUserEmail(user_email: any, product_id: any) {
+  try {
+    await pool.query(
+      `DELETE FROM usercart WHERE user_email = $1 AND product_id = $2 `,
+      [user_email, product_id],
+    );
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
   }
 }

@@ -1,15 +1,15 @@
-import { getSessionUserEmail } from "@/app/auth";
+import { validateRequest } from "@/lib/auth_utils";
 import { axios } from "./axios";
 import { ShoppingCartEntry } from "./product.types";
 import { isAxiosError } from "axios";
 
 // Returns all the items in the current user's shopping cart
 export async function getShoppingCartProducts(): Promise<ShoppingCartEntry[]> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       let response = await axios.get<ShoppingCartEntry[]>(
-        `/getUserCartByUserEmail/${user_email}`,
+        `/getUserCartByUserEmail/${user.user_email}`,
       );
 
       return response.data;
@@ -37,11 +37,11 @@ export default async function addToShoppingCart(
   delivery: boolean,
   warehouse_id?: number,
 ): Promise<void> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       await axios.post("/postProductToUserCart", {
-        user_email: user_email,
+        user_email: user.user_email,
         product_id: product_id,
         quantity: quantity,
         delivery: delivery,
@@ -63,12 +63,12 @@ export default async function addToShoppingCart(
 export async function removeFromShoppingCart(
   product_id: number,
 ): Promise<void> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       await axios.delete("/deleteUserCartByPidUserEmail", {
         data: {
-          user_email: user_email,
+          user_email: user.user_email,
           product_id: product_id,
         },
       });

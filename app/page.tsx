@@ -1,5 +1,6 @@
 import { TopNavbar } from "@/components/navbar";
 import { ItemScrollMenu } from "@/components/products";
+import React from "react";
 
 // Home page, displays sale products, and new products
 function Home() {

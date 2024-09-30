@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function PATCH(req: NextRequest) {
   try {
@@ -27,7 +27,7 @@ export async function PATCH(req: NextRequest) {
     }
     quantity = parseInt(quantity);
 
-    const response = await db.patchWarehouseStock(
+    const response = await patchWarehouseStock(
       warehouse_id,
       product_id,
       quantity,
@@ -50,5 +50,35 @@ export async function PATCH(req: NextRequest) {
       { error: "Server failed to modify warehouse quantity!" },
       { status: 500 },
     );
+  }
+}
+
+//Updates the stock quantity of a specific product in a warehouse.
+//Parameters:warehouse_id (Integer),product_id (Integer),quantity (Integer)
+//Returns:
+//1 if the operation is successful.
+//-1 if the current quantity is less than the requested quantity.
+//0 if the product is not found in the warehouse.
+
+async function patchWarehouseStock(
+  warehouse_id: any,
+  product_id: any,
+  quantity: number,
+) {
+  try {
+    let response = await pool.query(
+      `SELECT quantity FROM warehousestock WHERE warehouse_id = $1 AND product_id = $2;`,
+      [warehouse_id, product_id],
+    );
+    if (response.rows[0].quantity >= quantity) {
+      await pool.query(
+        `UPDATE warehousestock SET quantity = quantity - $3 WHERE warehouse_id = $1 AND product_id = $2;`,
+        [warehouse_id, product_id, quantity],
+      );
+      return 1;
+    }
+    return 0;
+  } catch (error) {
+    console.error("Error adjusting warehouse stock:", error);
   }
 }

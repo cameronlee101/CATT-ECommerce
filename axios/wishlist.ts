@@ -1,15 +1,15 @@
-import { getSessionUserEmail } from "@/app/auth";
+import { validateRequest } from "@/lib/auth_utils";
 import { axios } from "./axios";
 import { WishlistEntry } from "./product.types";
 import { isAxiosError } from "axios";
 
 // Returns all the items in the current user's wishlist
 export async function getWishlistProducts(): Promise<WishlistEntry[]> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       let response = await axios.get<WishlistEntry[]>(
-        `/getUserWishlistByUserEmail/${user_email}`,
+        `/getUserWishlistByUserEmail/${user.user_email}`,
       );
 
       return response.data;
@@ -33,11 +33,11 @@ export async function addToWishlist(
   product_id: number,
   quantity: number,
 ): Promise<void> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       await axios.post("/postProductToUserWishlist", {
-        user_email: user_email,
+        user_email: user.user_email,
         product_id: product_id,
         quantity: quantity,
       });
@@ -55,12 +55,12 @@ export async function addToWishlist(
 
 // Removes an item from the current user's wishlist
 export async function removeFromWishlist(product_id: number): Promise<void> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       await axios.delete("/deleteUserWishlistByPidUserEmail", {
         data: {
-          user_email: user_email,
+          user_email: user.user_email,
           product_id: product_id,
         },
       });

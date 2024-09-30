@@ -3,7 +3,7 @@ import { TopNavbar } from "@/components/navbar";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { getSessionUserEmail } from "@/app/auth";
+import { validateRequest } from "@/lib/auth_utils";
 import { getFilteredProducts } from "@/axios/product";
 import { Product } from "@/axios/product.types";
 import { DeleteModal } from "@/components/vendor-components";
@@ -11,10 +11,9 @@ import { EditModal } from "@/components/vendor-components";
 import { useRouter } from "next/navigation";
 
 async function fetchProducts() {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
-    console.log(getFilteredProducts({ user_email: user_email }));
-    return await getFilteredProducts({ user_email: user_email });
+  const { user } = await validateRequest();
+  if (user) {
+    return await getFilteredProducts({ user_email: user.user_email });
   } else {
     console.error("Could not retrieve vendor's products");
     return [];

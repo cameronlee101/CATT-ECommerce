@@ -7,25 +7,6 @@ import {
   getUserEnumVal,
 } from "./user.types";
 
-// Creates a new user with the user_email as the type user_type
-export async function createNewUser(
-  user_email: string,
-  user_type: UserTypes,
-): Promise<void> {
-  try {
-    axios.post("/postUser", {
-      user_email: user_email,
-      user_type: user_type,
-    });
-  } catch (error) {
-    if (isAxiosError(error)) {
-      console.error(error.response?.data || error.response || error);
-    } else {
-      console.error(error);
-    }
-  }
-}
-
 // Returns the type of user for the user_email
 export async function getUserType(
   user_email: string,

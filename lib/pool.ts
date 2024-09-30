@@ -1,11 +1,11 @@
-const { Pool } = require("pg");
+import pg from "pg";
 
-const pool = new Pool({
+const pool = new pg.Pool({
   user: process.env.PGUSER || "postgres",
   host: process.env.PGHOST || "localhost",
   password: process.env.PGPASSWORD || "root",
-  port: process.env.PGPORT || "5432",
+  port: parseInt(process.env.PGPORT || "5432"),
   database: process.env.PGDATABASE || "postgres",
 });
 
-module.exports = pool;
+export default pool;

@@ -7,7 +7,7 @@ import {
 import { axios } from "./axios";
 import { isAxiosError } from "axios";
 import { FiltersType, filtersToQueryString } from "./filters.types";
-import { getSessionUserEmail } from "@/app/auth";
+import { validateRequest } from "@/lib/auth_utils";
 
 // Given a product's ID, returns all of that product's info
 export async function getProduct(
@@ -98,8 +98,8 @@ export async function getFilteredProducts(
 export async function createProductListing(
   formData: ProductListingCreation,
 ): Promise<void> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     const {
       product_tags,
       main_product_img_file,
@@ -114,7 +114,7 @@ export async function createProductListing(
         `/createProductListing`,
         {
           ...rest,
-          user_email: user_email,
+          user_email: user.user_email,
           product_tags: [...product_tags],
           warehouse_ids: [...warehouse_ids],
           quantities: [...quantities],
@@ -196,11 +196,11 @@ export async function getProductTags() {
 
 // Returns all of a user's order history
 export async function getUserOrderHistory(): Promise<OrderHistoryEntry[]> {
-  const user_email = await getSessionUserEmail();
-  if (user_email) {
+  const { user } = await validateRequest();
+  if (user) {
     try {
       let response = await axios.get<OrderHistoryEntry[]>(
-        `/getOrderHistoryByEmail/${user_email}`,
+        `/getOrderHistoryByEmail/${user.user_email}`,
       );
 
       return response.data;

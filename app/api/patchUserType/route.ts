@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function PATCH(req: NextRequest) {
   try {
@@ -25,7 +25,7 @@ export async function PATCH(req: NextRequest) {
 
     const type_id = user_type === "vendor" ? 1 : 2;
 
-    await db.patchUserType(user_email, type_id);
+    await patchUserType(user_email, type_id);
 
     return NextResponse.json(
       { success: "User type modified successfully!" },
@@ -37,5 +37,19 @@ export async function PATCH(req: NextRequest) {
       { error: "Server failed to modify user type!" },
       { status: 500 },
     );
+  }
+}
+
+//Updates the user type for a specific user identified by their email
+//Parameters: user_email (String), user_type (String - "vendor" or "customer")
+//Returns: None.
+async function patchUserType(user_email: any, type: any) {
+  try {
+    await pool.query(`UPDATE users SET type_id = $1 WHERE user_email = $2`, [
+      type,
+      user_email,
+    ]);
+  } catch (error) {
+    console.error("Error updating user type:", error);
   }
 }

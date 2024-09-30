@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Input } from "@nextui-org/react";
-import { login } from "@/lib/auth_utils";
+import { signup } from "@/lib/auth_utils";
 
 function Page() {
   return (
     <>
-      <h1>Sign in</h1>
-      <form action={login}>
+      <h1>Create an account</h1>
+      <form action={signup}>
         <label htmlFor="useremail">Email</label>
         <Input name="useremail" id="useremail" />
         <br />
@@ -15,8 +15,8 @@ function Page() {
         <br />
         <Button type="submit">Continue</Button>
       </form>
-      <a className="text-blue-600" href="/signup">
-        Sign up
+      <a className="text-blue-600" href="/signin">
+        Sign in
       </a>
       <a className="text-blue-600 ml-6" href="/">
         Home

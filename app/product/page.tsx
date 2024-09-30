@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { getInStockWarehouses } from "@/axios/warehouse";
 import { WarehouseWithStock } from "@/axios/warehouse.types";
 import { InStockWarehouseMap } from "@/components/product-page";
-import { getSession } from "../auth";
+import { validateRequest } from "../../lib/auth_utils";
 
 type SearchParams = {
   product_id: number;
@@ -34,7 +34,7 @@ function page({ searchParams }: { searchParams: SearchParams }) {
   // if the user is logged in, adds an item to their shopping cart, otherwise redirects them to log in
   async function addItemToShoppingCart() {
     if (selectedQuantity > 0) {
-      const session = await getSession();
+      const { session } = await validateRequest();
       if (session) {
         if (
           selectedDelivery ||
@@ -65,7 +65,7 @@ function page({ searchParams }: { searchParams: SearchParams }) {
   // if the user is logged in, adds an item to their wishlist, otherwise redirects them to log in
   async function addItemToWishlist() {
     if (selectedQuantity > 0) {
-      const session = await getSession();
+      const { session } = await validateRequest();
       if (session) {
         try {
           await addToWishlist(searchParams.product_id, selectedQuantity);

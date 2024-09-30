@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     product_id = parseInt(product_id);
     quantity = parseInt(quantity);
 
-    await db.postProductToUserCart(
+    await postProductToUserCart(
       user_email,
       product_id,
       quantity,
@@ -35,5 +35,37 @@ export async function POST(req: NextRequest) {
       { error: "Server failed to add product to the user cart!" },
       { status: 500 },
     );
+  }
+}
+
+//Adds a specified quantity of a product to a user's cart. If the product is already present, it updates the quantity.
+//Parameters: user_email (string), quantity, product_id, warehouse_id (integer), delivery (boolean)
+async function postProductToUserCart(
+  user_email: any,
+  product_id: any,
+  quantity: any,
+  delivery: any,
+  warehouse_id: any,
+) {
+  try {
+    await pool.query(`BEGIN`);
+    const response = await pool.query(
+      `SELECT * FROM usercart WHERE user_email = $1 AND product_id = $2;`,
+      [user_email, product_id],
+    );
+    if (response.rows.length === 0) {
+      await pool.query(
+        `INSERT INTO usercart (user_email, product_id, quantity, delivery, warehouse_id) VALUES($1, $2, $3, $4, $5);`,
+        [user_email, product_id, quantity, delivery, warehouse_id],
+      );
+    } else {
+      await pool.query(
+        `UPDATE usercart SET quantity = $1 WHERE user_email = $2 AND product_id = $3;`,
+        [response.rows[0].quantity + quantity, user_email, product_id],
+      );
+    }
+    await pool.query(`COMMIT`);
+  } catch (error) {
+    console.error("Error adding item to cart:", error);
   }
 }

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require("@/app/api/db");
+import pool from "@/lib/pool";
 
 export async function DELETE(req: NextRequest) {
   try {
     const { product_id } = await req.json();
 
-    await db.deleteProductListingByProductId(product_id);
+    await deleteProductListingByProductId(product_id);
 
     return NextResponse.json({}, { status: 200 });
   } catch (error) {
@@ -14,5 +14,19 @@ export async function DELETE(req: NextRequest) {
       { error: "Failed to delete product listing" },
       { status: 500 },
     );
+  }
+}
+
+async function deleteProductListingByProductId(product_id: any) {
+  try {
+    await pool.query(
+      `
+      UPDATE product
+      SET active = false
+      WHERE product_id = $1;`,
+      [product_id],
+    );
+  } catch (error) {
+    console.error("Error deleting product listing:", error);
   }
 }
