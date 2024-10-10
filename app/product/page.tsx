@@ -12,6 +12,7 @@ import { getInStockWarehouses } from "@/axios/warehouse";
 import { WarehouseWithStock } from "@/axios/warehouse.types";
 import { InStockWarehouseMap } from "@/components/product-page";
 import { validateRequest } from "../../lib/auth_utils";
+import React from "react";
 
 type SearchParams = {
   product_id: number;

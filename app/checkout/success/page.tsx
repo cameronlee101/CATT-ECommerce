@@ -2,6 +2,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect } from "react";
+import React from "react";
 
 // This page is displayed when the user successfully checks out and pays for their order
 function page() {

@@ -11,16 +11,18 @@ import { hash } from "@node-rs/argon2";
 import { UserTypes } from "@/axios/user.types";
 import { generateIdFromEntropySize } from "lucia";
 
+const emailRegex: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
 export async function signup(formData: FormData): Promise<ActionResult> {
-  const userEmail = formData.get("useremail");
+  const userEmail = formData.get("user_email");
   if (
     typeof userEmail !== "string" ||
     userEmail.length < 3 ||
     userEmail.length > 31 ||
-    !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(userEmail)
+    !emailRegex.test(userEmail)
   ) {
     return {
-      error: "Invalid useremail",
+      error: "Invalid user_email",
     };
   }
   const password = formData.get("password");
@@ -43,7 +45,18 @@ export async function signup(formData: FormData): Promise<ActionResult> {
   });
   const userId = generateIdFromEntropySize(10); // 16 characters long
 
-  // TODO: check if user email is already used
+  // Check for existing users
+  const existingUsers = (
+    await pool.query<User>(`SELECT * FROM users WHERE user_email = $1`, [
+      userEmail,
+    ])
+  ).rows;
+  if (existingUsers.length != 0) {
+    return {
+      error: "User already exists with email " + userEmail,
+    };
+  }
+
   try {
     let address_id = 1;
     await pool.query(
@@ -71,15 +84,15 @@ export async function signup(formData: FormData): Promise<ActionResult> {
 }
 
 export async function login(formData: FormData): Promise<ActionResult> {
-  const useremail = formData.get("useremail");
+  const userEmail = formData.get("user_email");
   if (
-    typeof useremail !== "string" ||
-    useremail.length < 3 ||
-    useremail.length > 31 ||
-    !/^[a-z0-9@._-]+$/.test(useremail)
+    typeof userEmail !== "string" ||
+    userEmail.length < 3 ||
+    userEmail.length > 31 ||
+    !emailRegex.test(userEmail)
   ) {
     return {
-      error: "Invalid useremail",
+      error: "Invalid email",
     };
   }
   const password = formData.get("password");
@@ -95,7 +108,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
 
   const existingUsers = (
     await pool.query<User>(`SELECT * FROM users WHERE user_email = $1`, [
-      useremail,
+      userEmail,
     ])
   ).rows;
   if (!existingUsers) {
@@ -109,7 +122,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
     // it is crucial your implementation is protected against brute-force attacks with login throttling etc.
     // If useremails are public, you may outright tell the user that the useremail is invalid.
     return {
-      error: "Incorrect useremail or password",
+      error: "Incorrect email or password",
     };
   }
 
@@ -123,7 +136,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
   });
   if (!validPassword) {
     return {
-      error: "Incorrect useremail or password",
+      error: "Incorrect user email or password",
     };
   }
 

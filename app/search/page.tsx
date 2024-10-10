@@ -1,5 +1,6 @@
 import { TopNavbar } from "@/components/navbar";
 import { ItemsAndFilters } from "@/components/products";
+import React from "react";
 
 type SearchParams = {
   query: string;

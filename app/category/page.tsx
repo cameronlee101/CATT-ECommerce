@@ -1,6 +1,7 @@
 import { getCategoryEnumVal, getCategoryImg } from "@/axios/filters.types";
 import { TopNavbar } from "@/components/navbar";
 import { ItemsAndFilters } from "@/components/products";
+import React from "react";
 
 type SearchParams = {
   categoryName: string;
