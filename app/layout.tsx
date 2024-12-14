@@ -6,8 +6,8 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CTAT E-Commerce Website",
-  description: "CMPT372 e-commerce app group project",
+  title: "CATT E-Commerce Website",
+  description: "Fork of CMPT372 E-Commerce App Group Project",
 };
 
 export default function RootLayout({
