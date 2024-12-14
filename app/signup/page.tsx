@@ -44,16 +44,13 @@ function Page() {
           Continue
         </Button>
       </form>
-      {responseMessage && (
-        <div className="mt-4">
-          {responseMessage.includes("Success") ? (
-            <p className="text-green-600">{responseMessage}</p>
-          ) : (
-            <p className="text-red-600">{responseMessage}</p>
-          )}
-        </div>
-      )}
-
+      <div className="mt-4 h-6">
+        {responseMessage && responseMessage.includes("Success") ? (
+          <p className="text-green-600">{responseMessage}</p>
+        ) : (
+          <p className="text-red-600">{responseMessage}</p>
+        )}
+      </div>
       <div className="flex mb-4 mt-12">
         <p className="mr-2">Already have an account?</p>
         <a className="text-blue-600" href="/signin">

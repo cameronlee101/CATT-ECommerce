@@ -8,7 +8,6 @@ function Page() {
 
   const handleLogin = async (formData: FormData) => {
     const response = await login(formData);
-    console.log(response);
 
     if (response.error) {
       setResponseMessage("Error: " + response.error);
@@ -45,15 +44,13 @@ function Page() {
           Continue
         </Button>
       </form>
-      {responseMessage && (
-        <div className="mt-4">
-          {responseMessage.includes("Success") ? (
-            <p className="text-green-600">{responseMessage}</p>
-          ) : (
-            <p className="text-red-600">{responseMessage}</p>
-          )}
-        </div>
-      )}
+      <div className="mt-4 h-6">
+        {responseMessage && responseMessage.includes("Success") ? (
+          <p className="text-green-600">{responseMessage}</p>
+        ) : (
+          <p className="text-red-600">{responseMessage}</p>
+        )}
+      </div>
       <div className="flex mb-4 mt-12">
         <p className="mr-2">Don&#39;t have an account?</p>
         <a className="text-blue-600" href="/signup">

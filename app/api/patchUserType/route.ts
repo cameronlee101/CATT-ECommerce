@@ -17,15 +17,16 @@ export async function PATCH(req: NextRequest) {
     if (!user_type) {
       return NextResponse.json({ error: "Invalid type!" }, { status: 400 });
     }
-    user_type = user_type.trim().toLowerCase();
 
-    if (user_type !== "customer" && user_type !== "vendor") {
+    if (
+      user_type !== "Customer" &&
+      user_type !== "Vendor" &&
+      user_type !== "Admin"
+    ) {
       return NextResponse.json({ error: "Invalid type2!" }, { status: 400 });
     }
 
-    const type_id = user_type === "vendor" ? 1 : 2;
-
-    await patchUserType(user_email, type_id);
+    await patchUserType(user_email, user_type);
 
     return NextResponse.json(
       { success: "User type modified successfully!" },
@@ -45,7 +46,7 @@ export async function PATCH(req: NextRequest) {
 //Returns: None.
 async function patchUserType(user_email: any, type: any) {
   try {
-    await pool.query(`UPDATE users SET type_id = $1 WHERE user_email = $2`, [
+    await pool.query(`UPDATE users SET user_type = $1 WHERE user_email = $2`, [
       type,
       user_email,
     ]);

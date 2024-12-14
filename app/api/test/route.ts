@@ -188,14 +188,14 @@ async function init() {
   //Admins
   response = await pool.query(`SELECT * FROM userinfo;`);
   let response1 = await pool.query(`SELECT * FROM users;`);
-  // if (response.rows.length === 0 && response1.rows.length === 0) {
-  //   await pool.query(
-  //     `INSERT INTO userinfo (user_email, address_id) VALUES ('catchet101@gmail.com', 1);`,
-  //   );
-  //   await pool.query(
-  //     `INSERT INTO users (user_email, type_id) VALUES ('catchet101@gmail.com', 3);`,
-  //   );
-  // }
+  if (response.rows.length === 0 && response1.rows.length === 0) {
+    await pool.query(
+      `INSERT INTO userinfo (user_email, address_id) VALUES ('catchet101@gmail.com', 1);`,
+    );
+    await pool.query(
+      `INSERT INTO users (id, user_email, user_type, password_hash) VALUES (1234567812345678, 'catchet101@gmail.com', 'Admin', '$argon2id$v=19$m=19456,t=2,p=1$nfmKhGxLToW/3A5S+DwNkQ$JdwMLXbUt0yedPkBgGv/tj4N6HfEN5u/fZtShjor5F0');`,
+    );
+  }
   await pool.query(`COMMIT`);
 }
 

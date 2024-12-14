@@ -26,13 +26,13 @@ export async function signup(formData: FormData): Promise<ActionResult> {
     };
   }
   const password = formData.get("password");
-  if (
-    typeof password !== "string" ||
-    password.length < 6 ||
-    password.length > 255
-  ) {
+  if (typeof password !== "string") {
     return {
       error: "Invalid password",
+    };
+  } else if (password.length < 6 || password.length > 255) {
+    return {
+      error: "Password must be between 6-255 characters",
     };
   }
 
@@ -111,7 +111,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
       userEmail,
     ])
   ).rows;
-  if (!existingUsers) {
+  if (existingUsers != null && existingUsers.length == 0) {
     // NOTE:
     // Returning immediately allows malicious actors to figure out valid useremails from response times,
     // allowing them to only focus on guessing passwords in brute-force attacks.

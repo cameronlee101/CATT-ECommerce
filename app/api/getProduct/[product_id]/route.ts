@@ -22,7 +22,7 @@ export async function GET(
 
     const response = await getProductInfoByPid(product_id);
 
-    if (response?.length || 0 === 0) {
+    if (!response || response.length === 0) {
       return NextResponse.json(
         { error: "Product not found!" },
         { status: 404 },
