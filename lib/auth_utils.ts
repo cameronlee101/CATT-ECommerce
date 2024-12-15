@@ -13,6 +13,7 @@ import { generateIdFromEntropySize } from "lucia";
 
 const emailRegex: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+// Validates form values and then creates a new user in the DB
 export async function signup(formData: FormData): Promise<ActionResult> {
   const userEmail = formData.get("user_email");
   if (
@@ -83,6 +84,7 @@ export async function signup(formData: FormData): Promise<ActionResult> {
   return redirect("/");
 }
 
+// Checks for an existing user in the DB given the form data and logs them in
 export async function login(formData: FormData): Promise<ActionResult> {
   const userEmail = formData.get("user_email");
   if (
@@ -152,6 +154,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
   return redirect("/");
 }
 
+// Destroys the user's current session
 export async function logout(): Promise<ActionResult> {
   const { session } = await validateRequest();
   if (!session) {
@@ -175,6 +178,7 @@ interface ActionResult {
   error: string;
 }
 
+// Checks the user's current session and return the user's info
 export const validateRequest = cache(
   async (): Promise<
     { user: User; session: Session } | { user: null; session: null }
@@ -208,5 +212,21 @@ export const validateRequest = cache(
       }
     } catch {}
     return result;
+  },
+);
+
+// Checks if the current user's type matches one of the given arguments, if not then redirects them to home
+export const isAuthenticated = cache(
+  async (...desiredTypes: UserTypes[]): Promise<void> => {
+    const { user } = await validateRequest();
+
+    if (
+      !(
+        user?.user_type &&
+        desiredTypes.find((desiredType) => desiredType === user?.user_type)
+      )
+    ) {
+      redirect("/");
+    }
   },
 );
