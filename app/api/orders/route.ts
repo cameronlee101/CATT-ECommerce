@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import pool from "@/lib/pool";
-const handleResponse = require("./handleResponse");
+import { handleResponse } from "./handleResponse";
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET } = process.env;
 const paypal_base = "https://api-m.sandbox.paypal.com";
 

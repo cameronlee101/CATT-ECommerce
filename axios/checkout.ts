@@ -9,7 +9,7 @@ export async function createOrder() {
 
   if (user) {
     try {
-      const response = await axios.post(`/api/orders`, {
+      const response = await axios.post(`/orders`, {
         user_email: user.user_email,
       });
 
@@ -37,7 +37,7 @@ export async function onTransactionApprove(data: OnApproveData) {
 
   if (user) {
     try {
-      const response = await axios.post(`/api/orders/${data.orderID}/capture`, {
+      const response = await axios.post(`/orders/${data.orderID}/capture`, {
         user_email: user.user_email,
       });
 
