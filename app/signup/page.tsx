@@ -1,16 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Button, Input } from "@nextui-org/react";
 import { signup } from "@/lib/auth_utils";
 
 function Page() {
   const [responseMessage, setResponseMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const handleSignup = async (formData: FormData) => {
-    const response = await signup(formData);
+    if (!isPending) {
+      startTransition(async () => {
+        const response = await signup(formData);
 
-    if (response.error) {
-      setResponseMessage("Error: " + response.error);
+        if (response.error) {
+          setResponseMessage("Error: " + response.error);
+        }
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   };
 
@@ -30,6 +37,7 @@ function Page() {
           isRequired
         />
         <Input
+          className="mb-4"
           type="password"
           name="password"
           id="password"
@@ -39,17 +47,23 @@ function Page() {
           maxLength={255}
           isRequired
         />
+        <Input
+          type="password"
+          name="confirm_password"
+          id="confirm_password"
+          label="Confirm Password"
+          labelPlacement="outside"
+          placeholder="Confirm Your Password"
+          maxLength={255}
+          isRequired
+        />
         <br />
         <Button type="submit" className="max-w-fit self-center">
-          Continue
+          {isPending ? "Loading..." : "Continue"}
         </Button>
       </form>
       <div className="mt-4 h-6">
-        {responseMessage && responseMessage.includes("Success") ? (
-          <p className="text-green-600">{responseMessage}</p>
-        ) : (
-          <p className="text-red-600">{responseMessage}</p>
-        )}
+        <p className="text-red-600">{responseMessage}</p>
       </div>
       <div className="flex mb-4 mt-12">
         <p className="mr-2">Already have an account?</p>

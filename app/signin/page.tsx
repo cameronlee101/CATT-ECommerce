@@ -1,16 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Button, Input } from "@nextui-org/react";
 import { login } from "@/lib/auth_utils";
 
 function Page() {
   const [responseMessage, setResponseMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   const handleLogin = async (formData: FormData) => {
-    const response = await login(formData);
+    if (!isPending) {
+      startTransition(async () => {
+        const response = await login(formData);
 
-    if (response.error) {
-      setResponseMessage("Error: " + response.error);
+        if (response.error) {
+          setResponseMessage("Error: " + response.error);
+        }
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
   };
 
@@ -41,15 +48,11 @@ function Page() {
         />
         <br />
         <Button type="submit" className="max-w-fit self-center">
-          Continue
+          {isPending ? "Loading..." : "Continue"}
         </Button>
       </form>
       <div className="mt-4 h-6">
-        {responseMessage && responseMessage.includes("Success") ? (
-          <p className="text-green-600">{responseMessage}</p>
-        ) : (
-          <p className="text-red-600">{responseMessage}</p>
-        )}
+        <p className="text-red-600">{responseMessage}</p>
       </div>
       <div className="flex mb-4 mt-12">
         <p className="mr-2">Don&#39;t have an account?</p>

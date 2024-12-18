@@ -27,6 +27,8 @@ export async function signup(formData: FormData): Promise<ActionResult> {
     };
   }
   const password = formData.get("password");
+  const confirmPassword = formData.get("confirm_password");
+
   if (typeof password !== "string") {
     return {
       error: "Invalid password",
@@ -34,6 +36,12 @@ export async function signup(formData: FormData): Promise<ActionResult> {
   } else if (password.length < 6 || password.length > 255) {
     return {
       error: "Password must be between 6-255 characters",
+    };
+  }
+
+  if (password != confirmPassword) {
+    return {
+      error: "Passwords do not match",
     };
   }
 
@@ -97,6 +105,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
       error: "Invalid email",
     };
   }
+
   const password = formData.get("password");
   if (
     typeof password !== "string" ||
